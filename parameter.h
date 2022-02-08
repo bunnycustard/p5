@@ -7,5 +7,5 @@ class Parameter {
         void SetParam(string param);
         string ToString();
     private:
-        string theParameter; // Needs to be changed to string
+        string theParameter;
 };
