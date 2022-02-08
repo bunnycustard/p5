@@ -1,27 +1,26 @@
 #include "parser.h"
 
 Parser::Parser() {}
-
 Parser::~Parser(){}
 
-bool Parser::DatalogProgram(queue<Token> Tokens) {
+bool Parser::DatalogProgram(queue<Token> Tokens){
     Parse(Tokens);
     return fail;
 }
 
-string Parser::ToString() {
-    if (fail != true) {
+string Parser::ToString(){
+    if(fail != true){
         string thing;
         cout << Everything.ToString();
         return thing;
     }
-    else {
+    else{
         string stringy;
         return stringy;
     }
 }
 
-Datalog Parser::Parse(queue<Token> Tokens) {
+Datalog Parser::Parse(queue<Token> Tokens){
     TokenQueue = Tokens;
     vector<Predicate> Schemes;
     ParseCheck(SCHEMES); //Schemes
@@ -29,7 +28,7 @@ Datalog Parser::Parse(queue<Token> Tokens) {
     Schemes.push_back(ParseScheme());
     Schemes = ParseSchemeList(Schemes);
     if (fail == false) {
-        Everything.SetSchemes(Schemes);
+        Everything.SchemesSetter(Schemes);
         //cout << "Success! Schemes" << endl;/////////////////////////////////////
     }
     else {
@@ -42,8 +41,8 @@ Datalog Parser::Parse(queue<Token> Tokens) {
         vector<Predicate> parsedFacts; 
         parsedFacts = ParseFactList(parsedFacts);
         if (fail == false) {
-            Everything.SetFacts(parsedFacts);
-            Everything.SetDomain(Domain);
+            Everything.FactsSetter(parsedFacts);
+            Everything.DomainSetter(Domain);
             //cout << "Success! Facts" << endl;///////////////////////////////////////
         }
         else {
@@ -60,7 +59,7 @@ Datalog Parser::Parse(queue<Token> Tokens) {
         ParseCheck(COLON);
         Rules = ParseRuleList(Rules);
         if (fail == false) {
-            Everything.SetRules(Rules);
+            Everything.RulesSetter(Rules);
             //cout << "Success! Rules" << endl;///////////////////////////////////////
         }
         else {
@@ -77,7 +76,7 @@ Datalog Parser::Parse(queue<Token> Tokens) {
         Queries.push_back(ParseQuery());
         Queries = ParseQueryList(Queries);
         if ( fail == false) {
-            Everything.SetQueries(Queries);
+            Everything.QueriesSetter(Queries);
         }
         else {
             return Everything;
@@ -530,3 +529,4 @@ Token Parser::ParseOperator() {
         return thisToken;
     }
 }
+
