@@ -8,10 +8,10 @@ int main (int argc, char* argv[]) {
     }
     else {
         string filename = argv[1];
-        Scanner myScanner(filename);  
-        myScanner.tokenize();
+        Scanner Scanner1(filename);  
+        Scanner1.tokenize();
         Parser myParser;
-        bool trueorfalse = myParser.DatalogProgram(myScanner.GetList());
+        bool trueorfalse = myParser.DatalogProgram(Scanner1.GetList());
         if (trueorfalse == false) {
             myParser.ToString();
         }
