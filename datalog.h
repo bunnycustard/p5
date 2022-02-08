@@ -4,7 +4,7 @@
 
 enum PredicateType{Facts,Queries,Schemes};
 
-class Datalog {
+class Datalog{
     private:
         vector<Predicate> Facts;
         vector<Predicate> Queries;
