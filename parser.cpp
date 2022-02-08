@@ -349,7 +349,7 @@ bool Parser::ParseCheck(TokenType type) {
 }
 
 void Parser::PrintFail(int i) {
-    cout << "Failure!" << "\n  (" << thisToken.TypeString() << ",\"" <<thisToken.GetValue() <<"\"," << i << ")" << endl;
+    cout << "Failure!" << "\n  (" << thisToken.toString2() << ",\"" <<thisToken.GetValue() <<"\"," << i << ")" << endl;
     fail = true;
     return;
 }
