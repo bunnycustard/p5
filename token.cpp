@@ -126,7 +126,7 @@ void Token::Values2(string type, string token, int linum){
 	}
 }
 
-string Token::TypeString() {
+string Token::toString2() {
     string type = "ERROR1";
     switch (tType) {
         case COMMA:
