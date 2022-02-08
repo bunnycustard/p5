@@ -33,5 +33,3 @@ class Scanner {
         bool nextCharVal;
         //int initial;
 };
-
-
