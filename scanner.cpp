@@ -120,7 +120,7 @@ Token Scanner::StateMachine() {
                 else {
                     string mstr;
                     mstr += currentChar;
-                    newToken.SetComplexValues("UNDEFINED", mstr, currentLine);
+                    newToken.Values2("UNDEFINED", mstr, currentLine);
                     return newToken;
                 }
                 break;
@@ -130,11 +130,11 @@ Token Scanner::StateMachine() {
                 if (currentChar == ':') {
                     nextChar = file.get();
                     if (nextChar == '-') {
-                        newToken.SetValues(":-", currentLine);
+                        newToken.Values1(":-", currentLine);
                         return newToken;
                     }
                     else {
-                        newToken.SetValues(":", currentLine);
+                        newToken.Values1(":", currentLine);
                         nextCharVal = true;
                         return newToken;
                     }
@@ -142,7 +142,7 @@ Token Scanner::StateMachine() {
                 else {
                     string mystring;
                     mystring += currentChar;
-                    newToken.SetValues(mystring, currentLine);
+                    newToken.Values1(mystring, currentLine);
                     return newToken;
                 }
                 break;
@@ -152,7 +152,7 @@ Token Scanner::StateMachine() {
                 facts = WordExtractor();
                 if (currentChar == 'F') { // THIS IS TO IDENTIFY THE FACTS KEYWORD
                     if (facts == "Facts") {
-                        newToken.SetValues(facts, currentLine);
+                        newToken.Values1(facts, currentLine);
                         return newToken;
                     }
                     else {
@@ -161,7 +161,7 @@ Token Scanner::StateMachine() {
                 }
                 else if (currentChar == 'S') { // THIS IS TO IDENTIFY THE SCHEMES KEYWORD
                     if (facts == "Schemes") {
-                        newToken.SetValues(facts, currentLine);
+                        newToken.Values1(facts, currentLine);
                         return newToken;
                     }
                     else {
@@ -170,7 +170,7 @@ Token Scanner::StateMachine() {
                 }
                 else if (currentChar == 'Q') { // THIS IS TO IDENTIFY THE QUERIES KEYWORD
                     if (facts == "Queries") {
-                        newToken.SetValues(facts, currentLine);
+                        newToken.Values1(facts, currentLine);
                         return newToken;
                     }
                     else {
@@ -179,7 +179,7 @@ Token Scanner::StateMachine() {
                 }
                 else if (currentChar == 'R') { // THIS IS TO IDENTIFY THE RULES KEY WORD
                     if (facts == "Rules") {
-                        newToken.SetValues(facts, currentLine);
+                        newToken.Values1(facts, currentLine);
                         return newToken;
                     }
                     else {
@@ -207,7 +207,7 @@ Token Scanner::StateMachine() {
                         if (nextChar == '#' && currentChar == '|') {
                             bcom += "|#";
                             file.get();
-                            newToken.SetComplexValues("COMMENT", bcom, currentLine);
+                            newToken.Values2("COMMENT", bcom, currentLine);
                             currentLine =  currentLine + otherlines;
                             return newToken;
                         }
@@ -228,14 +228,14 @@ Token Scanner::StateMachine() {
                         nextChar = file.peek();
                     }
                     if (isEOF) {
-                        newToken.SetComplexValues("UNDEFINED", bcom, currentLine);
+                        newToken.Values2("UNDEFINED", bcom, currentLine);
                         tokenList.push(newToken);//////////////////////////////////////////////////////////////////////////////////////////////
-                        newToken.SetValues("EOF", currentLine + otherlines);/////////////////////////////////////////////////////////////////////////////////
+                        newToken.Values1("EOF", currentLine + otherlines);/////////////////////////////////////////////////////////////////////////////////
                         currentChar = EOF;
                        return newToken;
                     }
                     else {
-                        newToken.SetComplexValues("COMMENT", bcom, currentLine);
+                        newToken.Values2("COMMENT", bcom, currentLine);
                         currentLine = currentLine + otherlines;
                         newToken.toString();
                         return newToken;
@@ -255,7 +255,7 @@ Token Scanner::StateMachine() {
                             break;
                         }
                     }
-                    newToken.SetComplexValues("COMMENT", comment, currentLine);
+                    newToken.Values2("COMMENT", comment, currentLine);
                     return newToken;
                 }
                 
@@ -280,15 +280,15 @@ Token Scanner::StateMachine() {
                         }
                         else if (currentChar == '\'' && nextChar != '\''){  // single ' is found
                             mstr = mstr + "\'";
-                            newToken.SetComplexValues("STRING", mstr, currentLine);
+                            newToken.Values2("STRING", mstr, currentLine);
                             currentLine = currentLine + otherlines;
                             return newToken;
                             break;
                         }
                         else if (nextChar == EOF) {
-                            newToken.SetComplexValues("UNDEFINED", mstr, currentLine);
+                            newToken.Values2("UNDEFINED", mstr, currentLine);
                             tokenList.push(newToken);/////////////////////////////////////////////////////////////////////
-                            newToken.SetValues("EOF", currentLine + otherlines);////////////////////////////////////////////////////////
+                            newToken.Values1("EOF", currentLine + otherlines);////////////////////////////////////////////////////////
                             currentChar = EOF;
                             return newToken;
                             break;
@@ -300,7 +300,7 @@ Token Scanner::StateMachine() {
                     }
                 }
                 else if (currentChar == '\'') {
-                    newToken.SetComplexValues("STRING", "\'\'", currentLine);
+                    newToken.Values2("STRING", "\'\'", currentLine);
                     return newToken;
                 }
                 else {
@@ -319,16 +319,16 @@ Token Scanner::StateMachine() {
                         }
                         else if (currentChar == '\'' && nextChar != '\''){  // single ' is found
                             mstr = mstr + "\'";
-                            newToken.SetComplexValues("STRING", mstr, currentLine);
+                            newToken.Values2("STRING", mstr, currentLine);
                             currentLine = currentLine + otherlines;
                             return newToken;
                             break;
                         }
                         else if (nextChar == EOF) {
                             mstr += currentChar;
-                            newToken.SetComplexValues("UNDEFINED", mstr, currentLine);
+                            newToken.Values2("UNDEFINED", mstr, currentLine);
                             tokenList.push(newToken);/////////////////////////////////////////////////////////////////////
-                            newToken.SetValues("EOF", currentLine + otherlines);////////////////////////////////////////////////////////
+                            newToken.Values1("EOF", currentLine + otherlines);////////////////////////////////////////////////////////
                             currentChar = EOF;
                             return newToken;
                             break;
@@ -341,11 +341,11 @@ Token Scanner::StateMachine() {
                 }
             break;
             case (sID): //---------------------------------------------------------- sID CASE ---------------------------------------
-                newToken.SetComplexValues("ID", facts, currentLine);
+                newToken.Values2("ID", facts, currentLine);
                 return newToken;
                 break;
             case (sEOF): // -------------------------------------------------------- EOF CASE ---------------------------------------
-                newToken.SetValues("EOF", currentLine);
+                newToken.Values1("EOF", currentLine);
                 return newToken;
                 break;
             case (sWhiteSpace): //-------------------------------------------------- WhiteSpace CASE --------------------------------
@@ -355,10 +355,10 @@ Token Scanner::StateMachine() {
                 return newToken;
                 break;
             default:
-                newToken.SetComplexValues("UNDEFINED", "UNDEFINED", currentLine);
+                newToken.Values2("UNDEFINED", "UNDEFINED", currentLine);
         }   
     }
-    newToken.SetComplexValues("UNDEFINED", "UNDEFINED", currentLine);
+    newToken.Values2("UNDEFINED", "UNDEFINED", currentLine);
     return newToken;
 }
 
