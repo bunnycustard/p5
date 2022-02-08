@@ -76,56 +76,6 @@ string Token::toString(){
 return out.str();
 }
 
-void Token::Values1(string input ,int linum){
-	line = linum;
-	value = input;
-
-	if(input == ","){tType = COMMA;}
-	else if(input == "."){tType = PERIOD;}
-	else if(input == "?"){tType = Q_MARK;}
-	else if(input == "("){tType = LEFT_PAREN;}
-	else if(input == ")"){tType = RIGHT_PAREN;}
-	else if(input == ":-"){tType = COLON_DASH;}
-	else if(input == ":"){tType = COLON;}
-	else if(input == "*"){tType = MULTIPLY;}
-	else if(input == "+"){tType = ADD;}
-	else if(input == "Schemes"){tType = SCHEMES;}
-	else if(input == "Facts"){tType = FACTS;}
-	else if(input == "Queries"){tType = QUERIES;}
-	else if(input == "Rules"){tType = RULES;}
-	else if(input == "String"){tType = STRING;}
-	else if(input == "Comment"){tType = COMMENT;}
-	else if(input == "ID"){tType = ID;}
-	else if(input == "EOF"){
-		tType = EOFa;
-		value = "";
-	}
-	else{tType = UNDEFINED;}
-}
-
-void Token::Values2(string type, string token, int linum){
-	if(type == "ID"){
-		tType = ID;
-		value = token;
-		line = linum;
-	}
-	else if(type == "STRING"){
-		tType = STRING;
-		value = token;
-		line = linum;
-	}
-	else if(type == "COMMENT"){
-		tType = COMMENT;
-		value = token;
-		line = linum;
-	}
-	else if(type == "UNDEFINED"){
-		tType = UNDEFINED;
-		value = token;
-		line = linum;
-	}
-}
-
 string Token::toString2() {
     string type = "ERROR1";
     switch (tType) {
@@ -188,6 +138,56 @@ string Token::toString2() {
         break;
     }
     return type;
+}
+
+void Token::Values1(string input ,int linum){
+	line = linum;
+	value = input;
+
+	if(input == ","){tType = COMMA;}
+	else if(input == "."){tType = PERIOD;}
+	else if(input == "?"){tType = Q_MARK;}
+	else if(input == "("){tType = LEFT_PAREN;}
+	else if(input == ")"){tType = RIGHT_PAREN;}
+	else if(input == ":-"){tType = COLON_DASH;}
+	else if(input == ":"){tType = COLON;}
+	else if(input == "*"){tType = MULTIPLY;}
+	else if(input == "+"){tType = ADD;}
+	else if(input == "Schemes"){tType = SCHEMES;}
+	else if(input == "Facts"){tType = FACTS;}
+	else if(input == "Queries"){tType = QUERIES;}
+	else if(input == "Rules"){tType = RULES;}
+	else if(input == "String"){tType = STRING;}
+	else if(input == "Comment"){tType = COMMENT;}
+	else if(input == "ID"){tType = ID;}
+	else if(input == "EOF"){
+		tType = EOFa;
+		value = "";
+	}
+	else{tType = UNDEFINED;}
+}
+
+void Token::Values2(string type, string token, int linum){
+	if(type == "ID"){
+		tType = ID;
+		value = token;
+		line = linum;
+	}
+	else if(type == "STRING"){
+		tType = STRING;
+		value = token;
+		line = linum;
+	}
+	else if(type == "COMMENT"){
+		tType = COMMENT;
+		value = token;
+		line = linum;
+	}
+	else if(type == "UNDEFINED"){
+		tType = UNDEFINED;
+		value = token;
+		line = linum;
+	}
 }
 
 string Token::GetValue() {
