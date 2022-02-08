@@ -20,12 +20,12 @@ string Datalog::ToString(){
 	return output;
 }
 
-vector<Predicate> Datalog::GetFacts(){return Facts;}
-vector<Predicate> Datalog::GetQueries(){return Queries;}
-vector<Rule> Datalog::GetRules() {return Rules;}
-vector<Predicate> Datalog::GetSchemes(){return Schemes;}
 void Datalog::DomainSetter(set<string> Set){Domain = Set;}
 void Datalog::FactsSetter(vector<Predicate> Fact){for(unsigned int i = 0; i < Fact.size(); i++){Facts.push_back(Fact.at(i));}}
 void Datalog::QueriesSetter(vector<Predicate> Query){for(unsigned int i = 0; i < Query.size(); i++){Queries.push_back(Query.at(i));}}
 void Datalog::RulesSetter(vector<Rule> Rule) {for(unsigned int i = 0; i < Rule.size(); i++){Rules.push_back(Rule.at(i));}}
 void Datalog::SchemesSetter(vector<Predicate> Scheme){for(unsigned int i = 0; i < Scheme.size(); i++){Schemes.push_back(Scheme.at(i));}}
+vector<Predicate> Datalog::GetFacts(){return Facts;}
+vector<Predicate> Datalog::GetQueries(){return Queries;}
+vector<Rule> Datalog::GetRules() {return Rules;}
+vector<Predicate> Datalog::GetSchemes(){return Schemes;}
