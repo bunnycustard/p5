@@ -18,10 +18,10 @@ class Token{
         ~Token();
 				
         string toString();
-        string TypeString();
-        string GetValue();
+				string toString2();
         int linenumber();
         void Values1(string token, int line);
         void Values2(string type, string token, int line);
         TokenType GetType();
+        string GetValue();
 };
