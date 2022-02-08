@@ -9,10 +9,7 @@ Token::Token(){
 Token::~Token(){}
 
 int Token::linenumber(){return line;}
-
-TokenType Token::GetType() {
-    return tType;
-}
+TokenType Token::GetType() {return tType;}
 
 string Token::toString(){
 	string type = "placeholder";
@@ -79,82 +76,54 @@ string Token::toString(){
 return out.str();
 }
 
-void Token::Values1(string myString ,int lineNum) {
-        line = lineNum;
-        value = myString;
-    if (myString == ",") {
-        tType = COMMA;
-    }
-    else if (myString == ".") {
-        tType = PERIOD;
-    }
-    else if (myString == "?") {
-        tType = Q_MARK;
-    }
-    else if (myString == "(") {
-        tType = LEFT_PAREN;
-    }
-    else if (myString == ")") {
-        tType = RIGHT_PAREN;
-    }
-    else if (myString == ":-") {
-        tType = COLON_DASH;
-    }
-    else if (myString == ":") {
-        tType = COLON;
-    }
-    else if (myString == "*") {
-        tType = MULTIPLY;
-    }
-    else if (myString == "+") {
-        tType = ADD;
-    }
-    else if (myString == "Schemes") {
-        tType = SCHEMES;
-    }
-    else if (myString == "Facts") {
-        tType = FACTS;
-    }
-    else if (myString == "Queries") {
-        tType = QUERIES;
-    }
-    else if (myString == "Rules") {
-        tType = RULES;
-    }
-    else if (myString == "EOF") {
-        tType = EOFa;
-        value = "";
-    }
-    //NEED TO ADD STRINGS AND COMMENTS and IDs
-    else {
-        tType = UNDEFINED;
-    }
+void Token::Values1(string input ,int linum){
+	line = linum;
+	value = input;
 
+	if(input == ","){tType = COMMA;}
+	else if(input == "."){tType = PERIOD;}
+	else if(input == "?"){tType = Q_MARK;}
+	else if(input == "("){tType = LEFT_PAREN;}
+	else if(input == ")"){tType = RIGHT_PAREN;}
+	else if(input == ":-"){tType = COLON_DASH;}
+	else if(input == ":"){tType = COLON;}
+	else if(input == "*"){tType = MULTIPLY;}
+	else if(input == "+"){tType = ADD;}
+	else if(input == "Schemes"){tType = SCHEMES;}
+	else if(input == "Facts"){tType = FACTS;}
+	else if(input == "Queries"){tType = QUERIES;}
+	else if(input == "Rules"){tType = RULES;}
+	else if(input == "String"){tType = STRING;}
+	else if(input == "Comment"){tType = COMMENT;}
+	else if(input == "ID"){tType = ID;}
+	else if(input == "EOF"){
+		tType = EOFa;
+		value = "";
+	}
+	else{tType = UNDEFINED;}
 }
 
-void Token::Values2 (string type, string token, int lineNum) {
-    if (type == "ID") {
-        tType = ID;
-        value = token;
-        line = lineNum;
-    }
-    else if ( type == "COMMENT") {
-        tType = COMMENT;
-        value = token; // may need to be modified
-        line = lineNum;
-    }
-    else if (type == "STRING") {
-        tType = STRING;
-        value = token; // may need ot be modified
-        line = lineNum;
-
-    }
-    else if (type == "UNDEFINED") {
-        tType = UNDEFINED;
-        value = token; // may need to be modified
-        line = lineNum;
-
-    }
+void Token::Values2(string type, string token, int linum){
+	if(type == "ID"){
+		tType = ID;
+		value = token;
+		line = linum;
+	}
+	else if(type == "STRING"){
+		tType = STRING;
+		value = token;
+		line = linum;
+	}
+	else if(type == "COMMENT"){
+		tType = COMMENT;
+		value = token;
+		line = linum;
+	}
+	else if(type == "UNDEFINED"){
+		tType = UNDEFINED;
+		value = token;
+		line = linum;
+	}
 }
 
 string Token::TypeString() {
