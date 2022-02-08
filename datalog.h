@@ -5,21 +5,22 @@
 enum PredicateType{Facts,Queries,Schemes};
 
 class Datalog {
-    public:
-        void SetFacts(vector<Predicate> Fact);
-        void SetQueries(vector<Predicate> Query);
-        void SetSchemes(vector<Predicate> Scheme);
-        void SetRules(vector<Rule> Rule);
-        vector<Rule> GetRules();
-        vector<Predicate> GetQueries();
-        vector<Predicate> GetFacts();
-        vector<Predicate> GetSchemes();
-        void SetDomain(set<string> Set);
-        string ToString();
     private:
-        vector<Rule> Rules;
         vector<Predicate> Facts;
         vector<Predicate> Queries;
+        vector<Rule> Rules;
         vector<Predicate> Schemes;
         set<string> Domain;
+				
+    public:
+        void FactsSetter(vector<Predicate> Fact);
+        void QueriesSetter(vector<Predicate> Query);
+        void RulesSetter(vector<Rule> Rule);
+        void SchemesSetter(vector<Predicate> Scheme);
+        void DomainSetter(set<string> Set);
+        vector<Predicate> GetFacts();
+        vector<Predicate> GetQueries();
+        vector<Rule> GetRules();
+        vector<Predicate> GetSchemes();
+        string ToString();
 };
