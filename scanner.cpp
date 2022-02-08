@@ -16,23 +16,6 @@ Scanner::Scanner(string inputfile) {
 }
 Scanner::~Scanner() {file.close();}
 
-string Scanner::getWords(){
-	char tempChar;
-	string Word1;
-	Word1 += char1;  
-	tempChar = file.get();
-
-	while(isdigit(tempChar) || isalpha(tempChar)){
-		Word1 = Word1 + tempChar;
-		tempChar = file.get();  
-	}
-	if((!isdigit(tempChar)) && !isalpha(tempChar)){
-		char2val = true;
-		char2 = tempChar;
-	}            
-	return Word1;
-}
-
 void Scanner::tokenize(){
     while (file.good()){
         Token Token1;
@@ -282,6 +265,23 @@ Token Scanner::states(){
 	}
 	Token1.Values2("UNDEFINED", "UNDEFINED", line1);
 	return Token1;
+}
+
+string Scanner::getWords(){
+	char tempChar;
+	string Word1;
+	Word1 += char1;  
+	tempChar = file.get();
+
+	while(isdigit(tempChar) || isalpha(tempChar)){
+		Word1 = Word1 + tempChar;
+		tempChar = file.get();  
+	}
+	if((!isdigit(tempChar)) && !isalpha(tempChar)){
+		char2val = true;
+		char2 = tempChar;
+	}            
+	return Word1;
 }
 
 bool Scanner::findWhiteSpace(){
