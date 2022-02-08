@@ -5,7 +5,7 @@
 #include <queue>
 
 class Parser {
-		protected:
+    protected:
         Token Token1;
         Token Token2;
         vector<Parameter> parameters;
