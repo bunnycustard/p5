@@ -7,25 +7,24 @@ enum state{init, WhiteSpaceState, CharState, SpecialState, FinalState, IDState, 
 
 class Scanner{
     protected:
-        Token StateMachine();
-        int LineGenerator();
-        string WordExtractor();
-        bool IsWhiteSpace();
-
         ifstream file;
         string fileName;
         char char1;
         char char2;
-        int currentLine;
-        state currentstate;
+        int line1;
+        state state1;
         string facts;
         bool char2val;
 
+        Token states();
+        string getWords();
+        bool findWhiteSpace();
+
     public:
-        Scanner(string nameOfFile);
+        Scanner(string inputfile);
         ~Scanner();
+
         void tokenize();
         queue <Token> GetList();
-
-        queue <Token> tokenList;
+        queue <Token> tokens;
 };
