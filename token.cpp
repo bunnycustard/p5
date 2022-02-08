@@ -2,9 +2,9 @@
 #include <sstream>
 
 Token::Token(){
-    value = "placeholder";
-    line = -1;
-    tType = ERROR;
+	value = "placeholder";
+	line = -1;
+	tType = ERROR;
 }
 Token::~Token(){}
 
@@ -76,68 +76,68 @@ string Token::toString(){
 return out.str();
 }
 
-string Token::toString2() {
-    string type = "ERROR1";
-    switch (tType) {
-        case COMMA:
-            type = "COMMA";
-            break;
-        case PERIOD:
-            type = "PERIOD";
-            break;
-        case Q_MARK:
-            type = "Q_MARK";
-            break;
-        case LEFT_PAREN:
-            type = "LEFT_PAREN";
-            break;
-        case RIGHT_PAREN:
-            type = "RIGHT_PAREN";
-            break;
-        case COLON:
-            type = "COLON";
-            break;
-        case COLON_DASH:
-            type = "COLON_DASH";
-            break;
-        case MULTIPLY:
-            type = "MULTIPLY";
-            break;
-        case ADD: 
-            type = "ADD";
-            break;
-        case SCHEMES:
-            type = "SCHEMES";
-            break;
-        case FACTS:
-            type = "FACTS";
-            break;
-        case RULES:
-            type = "RULES";
-            break;
-        case QUERIES:
-            type = "QUERIES";
-            break;
-        case ID:
-            type = "ID";
-            break;
-        case STRING:
-            type = "STRING";
-            break;
-        case COMMENT:
-            type = "COMMENT";
-            break;
-        case UNDEFINED:
-            type = "UNDEFINED";
-            break;
-        case EOFa:
-            type = "EOF";
-            break;
-        case ERROR:
-            type = "ERROR";
-        break;
-    }
-    return type;
+string Token::toString2(){
+  string type = "ERROR1";
+	switch(tType){
+		case COMMA:
+			type = "COMMA";
+			break;
+		case PERIOD:
+			type = "PERIOD";
+			break;
+		case Q_MARK:
+			type = "Q_MARK";
+			break;
+		case LEFT_PAREN:
+			type = "LEFT_PAREN";
+			break;
+		case RIGHT_PAREN:
+			type = "RIGHT_PAREN";
+			break;
+		case COLON:
+			type = "COLON";
+			break;
+		case COLON_DASH:
+			type = "COLON_DASH";
+			break;
+		case MULTIPLY:
+			type = "MULTIPLY";
+			break;
+		case ADD: 
+			type = "ADD";
+			break;
+		case SCHEMES:
+			type = "SCHEMES";
+			break;
+		case FACTS:
+			type = "FACTS";
+			break;
+		case RULES:
+			type = "RULES";
+			break;
+		case QUERIES:
+			type = "QUERIES";
+			break;
+		case ID:
+			type = "ID";
+			break;
+		case STRING:
+			type = "STRING";
+			break;
+		case COMMENT:
+			type = "COMMENT";
+			break;
+		case UNDEFINED:
+			type = "UNDEFINED";
+			break;
+		case EOFa:
+			type = "EOF";
+			break;
+		case ERROR:
+			type = "ERROR";
+		break;
+	}
+  return type;
 }
 
 void Token::Values1(string input ,int linum){
@@ -190,6 +190,4 @@ void Token::Values2(string type, string token, int linum){
 	}
 }
 
-string Token::GetValue() {
-    return value;
-}
+string Token::GetValue(){return value;}
