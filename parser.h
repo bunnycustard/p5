@@ -5,13 +5,15 @@
 #include <queue>
 
 class Parser {
-    public:
-        Parser();
-        ~Parser();
+		protected:
+        Token Token1;
+        Token Token2;
+        vector<Parameter> parameters;
+        queue<Token> tQueue;
+        bool failed = false;
+        Datalog Everything;
+        set<string> Domain;
 
-        bool DatalogProgram(queue<Token> Tokens);
-        string ToString();
-protected:
         void PrintFail(int i = 0);
         bool CheckNext(TokenType type);
 
@@ -38,14 +40,11 @@ protected:
         Token ParseOperator();
 
         void PushOnList(string token);
+				
+    public:
+        Parser();
+        ~Parser();
 
-
-//VARIABLES
-        vector<Parameter> paramList;
-        queue<Token> TokenQueue;
-        Token thisToken;
-        Token nextToken;
-        bool fail = false;
-        Datalog Everything;
-        set<string> Domain;
+        bool DatalogProgram(queue<Token> Tokens);
+        string ToString();
 };
