@@ -1,156 +1,157 @@
 #include "token.h"
+#include <sstream>
 
 Token::Token(){
-    tokenValue = "placeholder";
+    value = "placeholder";
     line = -1;
-    tokenType = ERROR;
+    tType = ERROR;
 }
 Token::~Token(){}
 
 int Token::linenumber(){return line;}
 
 TokenType Token::GetType() {
-    return tokenType;
+    return tType;
 }
 
-string Token::toString() {
-    string theToken;
-    string type = "ERROR1";
-    switch (tokenType) {
-        case COMMA:
-            type = "COMMA";
-            break;
-        case PERIOD:
-            type = "PERIOD";
-            break;
-        case Q_MARK:
-            type = "Q_MARK";
-            break;
-        case LEFT_PAREN:
-            type = "LEFT_PAREN";
-            break;
-        case RIGHT_PAREN:
-            type = "RIGHT_PAREN";
-            break;
-        case COLON:
-            type = "COLON";
-            break;
-        case COLON_DASH:
-            type = "COLON_DASH";
-            break;
-        case MULTIPLY:
-            type = "MULTIPLY";
-            break;
-        case ADD: 
-            type = "ADD";
-            break;
-        case SCHEMES:
-            type = "SCHEMES";
-            break;
-        case FACTS:
-            type = "FACTS";
-            break;
-        case RULES:
-            type = "RULES";
-            break;
-        case QUERIES:
-            type = "QUERIES";
-            break;
-        case ID:
-            type = "ID";
-            break;
-        case STRING:
-            type = "STRING";
-            break;
-        case COMMENT:
-            type = "COMMENT";
-            break;
-        case UNDEFINED:
-            type = "UNDEFINED";
-            break;
-        case EOFa:
-            type = "EOF";
-            break;
-        case ERROR:
-            type = "ERROR";
-    }
-    theToken = "(" + type + ",\"" + tokenValue + "\"," + to_string(line) + ")";
-    return theToken;
+string Token::toString(){
+	string type = "placeholder";
+	switch(tType){
+		case COMMA:
+			type = "COMMA";
+			break;
+		case PERIOD:
+			type = "PERIOD";
+			break;
+		case Q_MARK:
+			type = "Q_MARK";
+			break;
+		case LEFT_PAREN:
+			type = "LEFT_PAREN";
+			break;
+		case RIGHT_PAREN:
+			type = "RIGHT_PAREN";
+			break;
+		case COLON:
+			type = "COLON";
+			break;
+		case COLON_DASH:
+			type = "COLON_DASH";
+			break;
+		case MULTIPLY:
+			type = "MULTIPLY";
+			break;
+		case ADD: 
+			type = "ADD";
+			break;
+		case SCHEMES:
+			type = "SCHEMES";
+			break;
+		case FACTS:
+			type = "FACTS";
+			break;
+		case RULES:
+			type = "RULES";
+			break;
+		case QUERIES:
+			type = "QUERIES";
+			break;
+		case ID:
+			type = "ID";
+			break;
+		case STRING:
+			type = "STRING";
+			break;
+		case COMMENT:
+			type = "COMMENT";
+			break;
+		case UNDEFINED:
+			type = "UNDEFINED";
+			break;
+		case EOFa:
+			type = "EOF";
+			break;
+		case ERROR:
+			type = "ERROR";
+	}
+  stringstream out;
+  out << "(" << type << "," << "\"" << value << "\"" << "," << to_string(line) << ")";
+return out.str();
 }
 
-void Token::SetValues(string myString ,int lineNum) {
+void Token::Values1(string myString ,int lineNum) {
         line = lineNum;
-        tokenValue = myString;
+        value = myString;
     if (myString == ",") {
-        tokenType = COMMA;
+        tType = COMMA;
     }
     else if (myString == ".") {
-        tokenType = PERIOD;
+        tType = PERIOD;
     }
     else if (myString == "?") {
-        tokenType = Q_MARK;
+        tType = Q_MARK;
     }
     else if (myString == "(") {
-        tokenType = LEFT_PAREN;
+        tType = LEFT_PAREN;
     }
     else if (myString == ")") {
-        tokenType = RIGHT_PAREN;
+        tType = RIGHT_PAREN;
     }
     else if (myString == ":-") {
-        tokenType = COLON_DASH;
+        tType = COLON_DASH;
     }
     else if (myString == ":") {
-        tokenType = COLON;
+        tType = COLON;
     }
     else if (myString == "*") {
-        tokenType = MULTIPLY;
+        tType = MULTIPLY;
     }
     else if (myString == "+") {
-        tokenType = ADD;
+        tType = ADD;
     }
     else if (myString == "Schemes") {
-        tokenType = SCHEMES;
+        tType = SCHEMES;
     }
     else if (myString == "Facts") {
-        tokenType = FACTS;
+        tType = FACTS;
     }
     else if (myString == "Queries") {
-        tokenType = QUERIES;
+        tType = QUERIES;
     }
     else if (myString == "Rules") {
-        tokenType = RULES;
+        tType = RULES;
     }
     else if (myString == "EOF") {
-        tokenType = EOFa;
-        tokenValue = "";
+        tType = EOFa;
+        value = "";
     }
     //NEED TO ADD STRINGS AND COMMENTS and IDs
     else {
-        tokenType = UNDEFINED;
+        tType = UNDEFINED;
     }
 
 }
 
-void Token::SetComplexValues (string type, string token, int lineNum) {
+void Token::Values2 (string type, string token, int lineNum) {
     if (type == "ID") {
-        tokenType = ID;
-        tokenValue = token;
+        tType = ID;
+        value = token;
         line = lineNum;
     }
     else if ( type == "COMMENT") {
-        tokenType = COMMENT;
-        tokenValue = token; // may need to be modified
+        tType = COMMENT;
+        value = token; // may need to be modified
         line = lineNum;
     }
     else if (type == "STRING") {
-        tokenType = STRING;
-        tokenValue = token; // may need ot be modified
+        tType = STRING;
+        value = token; // may need ot be modified
         line = lineNum;
 
     }
     else if (type == "UNDEFINED") {
-        tokenType = UNDEFINED;
-        tokenValue = token; // may need to be modified
+        tType = UNDEFINED;
+        value = token; // may need to be modified
         line = lineNum;
 
     }
@@ -158,7 +159,7 @@ void Token::SetComplexValues (string type, string token, int lineNum) {
 
 string Token::TypeString() {
     string type = "ERROR1";
-    switch (tokenType) {
+    switch (tType) {
         case COMMA:
             type = "COMMA";
             break;
@@ -221,5 +222,5 @@ string Token::TypeString() {
 }
 
 string Token::GetValue() {
-    return tokenValue;
+    return value;
 }
