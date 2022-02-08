@@ -9,17 +9,19 @@ enum TokenType{COMMA, PERIOD, Q_MARK, LEFT_PAREN, RIGHT_PAREN, COLON, COLON_DASH
 
 class Token{
     protected:
-        string tokenValue;
+        string value;
         int line;
-        TokenType tokenType;
+        TokenType tType;
+
      public:
         Token();
         ~Token();
+				
         string toString();
         string TypeString();
         string GetValue();
-        TokenType GetType();
         int linenumber();
-        void SetValues(string token, int line);
-        void SetComplexValues(string type, string token, int line);
+        void Values1(string token, int line);
+        void Values2(string type, string token, int line);
+        TokenType GetType();
 };
