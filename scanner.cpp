@@ -4,137 +4,101 @@
 #include <cctype>
 #include <cstdio> 
 #include <sstream> 
-// it is having trouble with the initial condition compiling them more than once
 
-Scanner::Scanner(string nameOfFile) {
-    fileName = nameOfFile;
+Scanner::Scanner(string inputfile) {
+    fileName = inputfile;
     char1 = '=';
     char2 = '=';
-    currentLine = 1;
-    currentstate = init;
+    line1 = 1;
+    state1 = init;
     file.open(fileName);
     facts = "==";
-    //initial = 1;
+}
+Scanner::~Scanner() {file.close();}
+
+string Scanner::getWords(){
+	char tempChar;
+	string Word1;
+	Word1 += char1;  
+	tempChar = file.get();
+
+	while(isdigit(tempChar) || isalpha(tempChar)){
+		Word1 = Word1 + tempChar;
+		tempChar = file.get();  
+	}
+	if((!isdigit(tempChar)) && !isalpha(tempChar)){
+		char2val = true;
+		char2 = tempChar;
+	}            
+	return Word1;
 }
 
-Scanner::~Scanner() {
-    file.close();
-}
-
-bool Scanner::IsWhiteSpace() {
-    if (char1 == ' ' || char1 == '\t' || char1 == '\n' || char1 == '\r') {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-
-string Scanner::WordExtractor() {
-    string newWord;
-    char wordChar;
-    newWord += char1;  
-    wordChar = file.get();
-    while(isalpha(wordChar)||isdigit(wordChar)) {
-        newWord = newWord + wordChar;
-        wordChar = file.get();  
-    }
-    if (!(isalpha(wordChar)) && !isdigit(wordChar)) {
-        char2val = true;
-        char2 = wordChar;
-    }            
-    return newWord;
-}
-
-int Scanner::LineGenerator() {
-    currentLine++;
-    return currentLine;
-}
-
-void Scanner::tokenize() {
-    while (file.good()) {
+void Scanner::tokenize(){
+    while (file.good()){
         Token newToken;
-        if (char2val == true) {
+        if (char2val == true){
             char1 = char2;
             char2val = false;
         }
-        else {
-            char1 = file.get();
+        else {char1 = file.get();}
+        newToken = states();
+        if (!(findWhiteSpace())){
+            if (newToken.GetType() == COMMENT){}
+            else {tokens.push(newToken);}
         }
-        newToken = StateMachine();
-        if /*(*/(!(IsWhiteSpace()) /*&& initial == 0)*/) { // change to newline and stuff that doesn't make a token
-            if (newToken.GetType() == COMMENT) {
-                //cout << "Comment Ignored" << endl;
-            }
-            else {
-                tokenList.push(newToken);
-            }
-        }
-        else if (char1 == EOF) {
-            tokenList.push(newToken);
-        }
-        //initial = 0;
-    }
-    return;
-}
+        else if(char1 == EOF){tokens.push(newToken);}
+    }return;}
 
-Token Scanner::StateMachine() {
+Token Scanner::states() {
     Token newToken;
-    currentstate = init;
-    while (currentstate != FinalState) {
-        switch(currentstate) {
-            case (init): // ----------------------------------------------- init CASE ---------------------------------------------------
+    state1 = init;
+    while (state1 != FinalState) {
+        switch(state1) {
+            case (init):
                 if(char1 == EOF){
-                    currentstate = EOFState;
+                    state1 = EOFState;
                 }
-                /*
-                else if (initial == 1) {
-                    currentstate = FinalState;
-                }
-                */
                 else if (char1 == ','|| char1 == '.'|| char1 == '?'||
                     char1 == '('|| char1 == ')'|| char1 == '*'||
                     char1 == '+'|| char1 == ':') {
-                    currentstate = CharState; 
+                    state1 = CharState; 
                 }
-                else if (IsWhiteSpace()) {
+                else if (findWhiteSpace()) {
                     if (char1 == '\n'|| char1 == '\r') {
-                        currentLine++;
-                        currentstate = WhiteSpaceState;
+                        line1++;
+                        state1 = WhiteSpaceState;
                     }
                     else if (char1 == '\t') {
-                        currentstate = WhiteSpaceState;
+                        state1 = WhiteSpaceState;
                     }
-                    currentstate = WhiteSpaceState;
+                    state1 = WhiteSpaceState;
                 } 
                 else if (char1 == '#') {
-                    currentstate = CommentState;
+                    state1 = CommentState;
                 }
                 else if (char1 == '\'') {
-                    currentstate = StringState;
+                    state1 = StringState;
                 }
                 else if (isalpha(char1)) {
-                    currentstate = SpecialState;
+                    state1 = SpecialState;
                 }
                 else {
                     string mstr;
                     mstr += char1;
-                    newToken.Values2("UNDEFINED", mstr, currentLine);
+                    newToken.Values2("UNDEFINED", mstr, line1);
                     return newToken;
                 }
                 break;
 
-            case (CharState): //----------------------------------------------- CharState CASE -----------------------------------------------------
-            // ---------------------------------------- Identifies ":" ":-" "," "." "(" ")" "*" "+" ----------------------------------------
+            case (CharState): 
                 if (char1 == ':') {
                     char2 = file.get();
                     if (char2 == '-') {
-                        newToken.Values1(":-", currentLine);
+                        newToken.Values1(":-", line1);
                         return newToken;
                     }
                     else {
-                        newToken.Values1(":", currentLine);
+                        newToken.Values1(":", line1);
                         char2val = true;
                         return newToken;
                     }
@@ -142,59 +106,56 @@ Token Scanner::StateMachine() {
                 else {
                     string mystring;
                     mystring += char1;
-                    newToken.Values1(mystring, currentLine);
+                    newToken.Values1(mystring, line1);
                     return newToken;
                 }
                 break;
 
-            case (SpecialState): // ----------------------------------------- SpecialState CASE ----------------------------------------------------
-            // -----------------------------------------------I dentifies the "Facts", "Queries", "Rules", "Schemes" -----------------------
-                facts = WordExtractor();
-                if (char1 == 'F') { // THIS IS TO IDENTIFY THE FACTS KEYWORD
+            case (SpecialState):
+                facts = getWords();
+                if (char1 == 'F') {
                     if (facts == "Facts") {
-                        newToken.Values1(facts, currentLine);
+                        newToken.Values1(facts, line1);
                         return newToken;
                     }
                     else {
-                        currentstate = IDState;
+                        state1 = IDState;
                     }
                 }
-                else if (char1 == 'S') { // THIS IS TO IDENTIFY THE SCHEMES KEYWORD
+                else if (char1 == 'S') {
                     if (facts == "Schemes") {
-                        newToken.Values1(facts, currentLine);
+                        newToken.Values1(facts, line1);
                         return newToken;
                     }
                     else {
-                        currentstate = IDState;
+                        state1 = IDState;
                     }
                 }
-                else if (char1 == 'Q') { // THIS IS TO IDENTIFY THE QUERIES KEYWORD
+                else if (char1 == 'Q') {
                     if (facts == "Queries") {
-                        newToken.Values1(facts, currentLine);
+                        newToken.Values1(facts, line1);
                         return newToken;
                     }
                     else {
-                        currentstate = IDState;
+                        state1 = IDState;
                     }
                 }
-                else if (char1 == 'R') { // THIS IS TO IDENTIFY THE RULES KEY WORD
+                else if (char1 == 'R') {
                     if (facts == "Rules") {
-                        newToken.Values1(facts, currentLine);
+                        newToken.Values1(facts, line1);
                         return newToken;
                     }
                     else {
-                        currentstate = IDState;
+                        state1 = IDState;
                     }
                 }
                 else {
-                    currentstate = IDState;
+                    state1 = IDState;
                 }
                 break;
 
             case (CommentState)://---------------------------------------------------CommentState-------------------------------------------------
-            // not working for the special case that it reaches the end without getting the closing comment identifier
                 char2 = file.get();
-                //block comment
                 char1 = char2;
                 if (char1 == '|') {
                     int otherlines = 0;
@@ -207,8 +168,8 @@ Token Scanner::StateMachine() {
                         if (char2 == '#' && char1 == '|') {
                             bcom += "|#";
                             file.get();
-                            newToken.Values2("COMMENT", bcom, currentLine);
-                            currentLine =  currentLine + otherlines;
+                            newToken.Values2("COMMENT", bcom, line1);
+                            line1 =  line1 + otherlines;
                             return newToken;
                         }
                         else if (char2 == EOF) {
@@ -228,21 +189,20 @@ Token Scanner::StateMachine() {
                         char2 = file.peek();
                     }
                     if (isEOF) {
-                        newToken.Values2("UNDEFINED", bcom, currentLine);
-                        tokenList.push(newToken);//////////////////////////////////////////////////////////////////////////////////////////////
-                        newToken.Values1("EOF", currentLine + otherlines);/////////////////////////////////////////////////////////////////////////////////
+                        newToken.Values2("UNDEFINED", bcom, line1);
+                        tokens.push(newToken);
+                        newToken.Values1("EOF", line1 + otherlines);
                         char1 = EOF;
                        return newToken;
                     }
                     else {
-                        newToken.Values2("COMMENT", bcom, currentLine);
-                        currentLine = currentLine + otherlines;
+                        newToken.Values2("COMMENT", bcom, line1);
+                        line1 = line1 + otherlines;
                         newToken.toString();
                         return newToken;
                     }
                     char1 = file.get();
                 }
-                //line comment
                 else {
                     string comment = "#";
                     comment = comment + char1;
@@ -255,7 +215,7 @@ Token Scanner::StateMachine() {
                             break;
                         }
                     }
-                    newToken.Values2("COMMENT", comment, currentLine);
+                    newToken.Values2("COMMENT", comment, line1);
                     return newToken;
                 }
                 
@@ -263,7 +223,6 @@ Token Scanner::StateMachine() {
             break;
             case (StringState)://-----------------------------------------------------StringState CASE -------------------------------------
                 char1 = file.get();
-                //general case: goes until reaches another '
                 if (char1 == '\'') {
                     string mstr = "\'";
                     int otherlines = 0;
@@ -272,23 +231,23 @@ Token Scanner::StateMachine() {
                             otherlines++;
                         }
                         char2 = file.peek();
-                        if (char1 == '\'' && char2 == '\'') { // special case that back to back '' are found
+                        if (char1 == '\'' && char2 == '\'') {
                             char1 = file.get();
                             char2 = file.peek();
                             mstr = mstr + char1 + "\'";
 
                         }
-                        else if (char1 == '\'' && char2 != '\''){  // single ' is found
+                        else if (char1 == '\'' && char2 != '\''){
                             mstr = mstr + "\'";
-                            newToken.Values2("STRING", mstr, currentLine);
-                            currentLine = currentLine + otherlines;
+                            newToken.Values2("STRING", mstr, line1);
+                            line1 = line1 + otherlines;
                             return newToken;
                             break;
                         }
                         else if (char2 == EOF) {
-                            newToken.Values2("UNDEFINED", mstr, currentLine);
-                            tokenList.push(newToken);/////////////////////////////////////////////////////////////////////
-                            newToken.Values1("EOF", currentLine + otherlines);////////////////////////////////////////////////////////
+                            newToken.Values2("UNDEFINED", mstr, line1);
+                            tokens.push(newToken);
+                            newToken.Values1("EOF", line1 + otherlines);
                             char1 = EOF;
                             return newToken;
                             break;
@@ -300,7 +259,7 @@ Token Scanner::StateMachine() {
                     }
                 }
                 else if (char1 == '\'') {
-                    newToken.Values2("STRING", "\'\'", currentLine);
+                    newToken.Values2("STRING", "\'\'", line1);
                     return newToken;
                 }
                 else {
@@ -311,24 +270,24 @@ Token Scanner::StateMachine() {
                             otherlines++;
                         }
                         char2 = file.peek();
-                        if (char1 == '\'' && char2 == '\'') { // special case that back to back '' are found
+                        if (char1 == '\'' && char2 == '\'') {
                             char1 = file.get();
                             char2 = file.peek();
                             mstr = mstr + char1 + "\'";
 
                         }
-                        else if (char1 == '\'' && char2 != '\''){  // single ' is found
+                        else if (char1 == '\'' && char2 != '\''){
                             mstr = mstr + "\'";
-                            newToken.Values2("STRING", mstr, currentLine);
-                            currentLine = currentLine + otherlines;
+                            newToken.Values2("STRING", mstr, line1);
+                            line1 = line1 + otherlines;
                             return newToken;
                             break;
                         }
                         else if (char2 == EOF) {
                             mstr += char1;
-                            newToken.Values2("UNDEFINED", mstr, currentLine);
-                            tokenList.push(newToken);/////////////////////////////////////////////////////////////////////
-                            newToken.Values1("EOF", currentLine + otherlines);////////////////////////////////////////////////////////
+                            newToken.Values2("UNDEFINED", mstr, line1);
+                            tokens.push(newToken);
+                            newToken.Values1("EOF", line1 + otherlines);
                             char1 = EOF;
                             return newToken;
                             break;
@@ -340,28 +299,31 @@ Token Scanner::StateMachine() {
                     }
                 }
             break;
-            case (IDState): //---------------------------------------------------------- IDState CASE ---------------------------------------
-                newToken.Values2("ID", facts, currentLine);
+            case (IDState):
+                newToken.Values2("ID", facts, line1);
                 return newToken;
                 break;
-            case (EOFState): // -------------------------------------------------------- EOF CASE ---------------------------------------
-                newToken.Values1("EOF", currentLine);
+            case (EOFState):
+                newToken.Values1("EOF", line1);
                 return newToken;
                 break;
-            case (WhiteSpaceState): //-------------------------------------------------- WhiteSpace CASE --------------------------------
-                currentstate = FinalState;
+            case (WhiteSpaceState):
+                state1 = FinalState;
                 break;
-            case (FinalState): // ------------------------------------------------------ FinalState CASE ------------------------------------
+            case (FinalState):
                 return newToken;
                 break;
             default:
-                newToken.Values2("UNDEFINED", "UNDEFINED", currentLine);
+                newToken.Values2("UNDEFINED", "UNDEFINED", line1);
         }   
     }
-    newToken.Values2("UNDEFINED", "UNDEFINED", currentLine);
+    newToken.Values2("UNDEFINED", "UNDEFINED", line1);
     return newToken;
 }
 
-queue <Token> Scanner::GetList() {
-    return tokenList;
+bool Scanner::findWhiteSpace(){
+	if(char1 == ' ' || char1 == '\n' || char1 == '\r' || char1 == '\t'){return true;}
+	else{return false;}
 }
+
+queue <Token> Scanner::GetList() {return tokens;}
