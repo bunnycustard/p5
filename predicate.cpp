@@ -1,28 +1,18 @@
 #include "predicate.h"
 
-void Predicate::SetName(string theName) {
-    Name = theName;
-}
-
-void Predicate::PushPredicate(Parameter theParameter) {
-    parameterList.push_back(theParameter);
+void Predicate::NameSetter(string Name1){Name = Name1;}
+void Predicate::PPush(Parameter theParameter){
+    paramlist.push_back(theParameter);
     return;
 }
-string Predicate::ToString() {
-    string Pstring = Name + "(";
-    for (unsigned int i = 0; i < parameterList.size(); i++) {
-        
-        if (i ==0 ){
-            Pstring = Pstring + parameterList.at(i).ToString();
-        }
-        else {
-            Pstring = Pstring + "," + parameterList.at(i).ToString();
-        }
-    }
-    Pstring = Pstring + ")";
-    return Pstring;
-}
+vector<Parameter> Predicate::GetVec(){return paramlist;}
 
-vector<Parameter> Predicate::ReturnVector() {
-    return parameterList;
+string Predicate::ToString(){
+    string pString = Name + "(";
+    for (unsigned int i = 0; i < paramlist.size(); i++){
+        if(i ==0 ){pString = pString + paramlist.at(i).ToString();}
+        else{pString = pString + "," + paramlist.at(i).ToString();}
+    }
+    pString = pString + ")";
+    return pString;
 }
