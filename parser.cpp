@@ -38,7 +38,7 @@ Datalog Parser::Parse(queue<Token> Tokens){
         pCheck(FACTS);
         pCheck(COLON);
         vector<Predicate> parsedFacts; 
-        parsedFacts = ParseFactList(parsedFacts);
+        parsedFacts = pFactList(parsedFacts);
         if (failed == false) {
             All.FactsSetter(parsedFacts);
             All.DomainSetter(Domain);
@@ -55,7 +55,7 @@ Datalog Parser::Parse(queue<Token> Tokens){
         vector<Rule> Rules;
         pCheck(RULES);
         pCheck(COLON);
-        Rules = ParseRuleList(Rules);
+        Rules = pRuleList(Rules);
         if (failed == false) {
             All.RulesSetter(Rules);
         }
@@ -70,8 +70,8 @@ Datalog Parser::Parse(queue<Token> Tokens){
         vector<Predicate> Queries;
         pCheck(QUERIES);
         pCheck(COLON);
-        Queries.push_back(ParseQuery());
-        Queries = ParseQueryList(Queries);
+        Queries.push_back(pQuery());
+        Queries = pQueryList(Queries);
         if ( failed == false) {
             All.QueriesSetter(Queries);
         }
@@ -102,10 +102,10 @@ Datalog Parser::Parse(queue<Token> Tokens){
     }
 }
 
-Predicate Parser::ParseQuery() {
+Predicate Parser::pQuery() {
     Predicate Query;
     if (failed == false) {
-        Query = ParsePredicate();
+        Query = pPredicate();
         pCheck(Q_MARK);
         return Query;
     }
@@ -114,14 +114,14 @@ Predicate Parser::ParseQuery() {
     }
 }
 
-vector<Predicate> Parser::ParseQueryList(vector<Predicate> Queries) {
+vector<Predicate> Parser::pQueryList(vector<Predicate> Queries) {
     if (failed == false) {
         if (Token2.GetType() != ID) {
             return Queries;
         }
         else {
-            Queries.push_back(ParseQuery());
-            Queries = ParseQueryList(Queries);
+            Queries.push_back(pQuery());
+            Queries = pQueryList(Queries);
             return Queries;
         }
     }
@@ -130,14 +130,14 @@ vector<Predicate> Parser::ParseQueryList(vector<Predicate> Queries) {
     }
 }
 
-vector<Rule> Parser::ParseRuleList(vector<Rule> RuleList) {
+vector<Rule> Parser::pRuleList(vector<Rule> RuleList) {
     if(failed == false) {
         if (Token2.GetType() == QUERIES) {
             return RuleList;
         }
         else {
-            RuleList.push_back(ParseRules());
-            RuleList = ParseRuleList(RuleList);
+            RuleList.push_back(pRules());
+            RuleList = pRuleList(RuleList);
             return RuleList;
         }
     }
@@ -146,16 +146,16 @@ vector<Rule> Parser::ParseRuleList(vector<Rule> RuleList) {
     }
 }
 
-Rule Parser::ParseRules() {
+Rule Parser::pRules() {
     Rule theRule;
     vector<Predicate> listOfRules;
     Predicate rule;
     if (failed == false) {
-        theRule.SetHeadPredicate(ParseHeadPredicate());
+        theRule.SetHeadPredicate(pHeadPredicate());
         pCheck(COLON_DASH);
-        rule = ParsePredicate();
+        rule = pPredicate();
         listOfRules.push_back(rule);
-        listOfRules = ParsePredicateList(listOfRules);
+        listOfRules = pPredicateList(listOfRules);
         pCheck(PERIOD);
         theRule.SetRule(listOfRules);
         return theRule;
@@ -165,21 +165,21 @@ Rule Parser::ParseRules() {
     }
 }
 
-vector<Predicate> Parser::ParseFactList(vector<Predicate> Facts) {
+vector<Predicate> Parser::pFactList(vector<Predicate> Facts) {
     Predicate newFact;
     if (failed == false) {
         if (Token2.GetType() == RULES) {
             return Facts; 
         }
         else {
-            newFact = ParseFact();
+            newFact = pFact();
             Facts.push_back(newFact);
             vector<Parameter> parameters;
             parameters = newFact.ReturnVector();
             for (unsigned int i = 0; i < parameters.size(); i++) {
                 Domain.insert(parameters.at(i).ToString());
             }
-            Facts = ParseFactList(Facts);
+            Facts = pFactList(Facts);
             return Facts;
         }
     }
@@ -188,7 +188,7 @@ vector<Predicate> Parser::ParseFactList(vector<Predicate> Facts) {
     }
 }
 
-Predicate Parser::ParseFact() {
+Predicate Parser::pFact() {
     Predicate Facts;
     if (failed == false) {
         parameters.clear();
@@ -196,9 +196,9 @@ Predicate Parser::ParseFact() {
         Facts.SetName(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(STRING);
-        PushOnList(Token1.GetValue());
+        Pusher(Token1.GetValue());
         Domain.insert(Token1.GetValue());
-        ParseStringList();
+        pStringList();
         pCheck(RIGHT_PAREN);
         pCheck(PERIOD);
         for (unsigned int i = 0; i < parameters.size(); i++) {
@@ -211,13 +211,13 @@ Predicate Parser::ParseFact() {
     } 
 }
 
-void Parser::ParseStringList(){
+void Parser::pStringList(){
     if (failed == false) {
         if (Token2.GetType() == COMMA) {
             pCheck(COMMA);
             pCheck(STRING);
-            PushOnList(Token1.GetValue());
-            ParseStringList();
+            Pusher(Token1.GetValue());
+            pStringList();
         }
         else {
             return;
@@ -236,8 +236,8 @@ Predicate Parser::pScheme() {
         Schemes.SetName(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(ID);
-        PushOnList(Token1.GetValue());
-        ParseIDList();
+        Pusher(Token1.GetValue());
+        pIDList();
         pCheck(RIGHT_PAREN);
         for (unsigned int i = 0; i < parameters.size(); i++) {
             Schemes.PushPredicate(parameters.at(i));
@@ -267,13 +267,13 @@ vector<Predicate> Parser::pSchemeList(vector<Predicate> Schemes) {
     }
 }
 
-void Parser::ParseIDList() {
+void Parser::pIDList() {
     if (failed == false) {
         if (Token2.GetType() == COMMA) {
             pCheck(COMMA);
             pCheck(ID);
-            PushOnList(Token1.GetValue());
-            ParseIDList();
+            Pusher(Token1.GetValue());
+            pIDList();
         }
         else {
             return;
@@ -337,7 +337,7 @@ void Parser::WhenFailed(int i) {
     return;
 }
 
-Predicate Parser::ParseHeadPredicate() {
+Predicate Parser::pHeadPredicate() {
     Predicate headPredicate;
     if (failed == false) {
         parameters.clear();
@@ -345,8 +345,8 @@ Predicate Parser::ParseHeadPredicate() {
         headPredicate.SetName(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(ID);
-        PushOnList(Token1.GetValue());
-        ParseIDList();
+        Pusher(Token1.GetValue());
+        pIDList();
         pCheck(RIGHT_PAREN);
         for (unsigned int i = 0; i < parameters.size(); i++) {
             headPredicate.PushPredicate(parameters.at(i));
@@ -358,12 +358,12 @@ Predicate Parser::ParseHeadPredicate() {
     }
 }
 
-vector<Predicate> Parser::ParsePredicateList(vector<Predicate> list) {
+vector<Predicate> Parser::pPredicateList(vector<Predicate> list) {
     if (failed == false) {
         if (Token2.GetType() == COMMA) {
             pCheck(COMMA);
-            list.push_back(ParsePredicate());
-            list = ParsePredicateList(list);
+            list.push_back(pPredicate());
+            list = pPredicateList(list);
             return list;
         }
         else {
@@ -375,7 +375,7 @@ vector<Predicate> Parser::ParsePredicateList(vector<Predicate> list) {
     }
 }
 
-Predicate Parser::ParsePredicate(){
+Predicate Parser::pPredicate(){
     Predicate Predicates;
     Parameter newParam;
     if (failed == false) {
@@ -383,9 +383,9 @@ Predicate Parser::ParsePredicate(){
         pCheck(ID);
         Predicates.SetName(Token1.GetValue());
         pCheck(LEFT_PAREN);
-        newParam = ParseParameter();
-        PushOnList(newParam.ToString());
-        ParseParameterList();
+        newParam = pParameter();
+        Pusher(newParam.ToString());
+        pParameters();
         pCheck(RIGHT_PAREN);
         for (unsigned int i = 0; i < parameters.size(); i++) {
             Predicates.PushPredicate(parameters.at(i));
@@ -397,7 +397,7 @@ Predicate Parser::ParsePredicate(){
     }
 }
 
-void Parser::PushOnList(string token) {
+void Parser::Pusher(string token) {
     Parameter newParam;
     if (Token1.GetValue() != "") {
         newParam.SetParam(token);
@@ -408,7 +408,7 @@ void Parser::PushOnList(string token) {
     return;
 }
 
-Parameter Parser::ParseParameter() {
+Parameter Parser::pParameter() {
     Parameter newParam;
     if (failed == false) {
         Token toSend = Token2;
@@ -424,7 +424,7 @@ Parameter Parser::ParseParameter() {
         }
         else if (Token2.GetType() == LEFT_PAREN) {
             string tempstring;
-            tempstring = ParseExpression();
+            tempstring = pExpression();
             tempstring = "(" + tempstring + ")";
             newParam.SetParam(tempstring);
             return newParam;
@@ -440,7 +440,7 @@ Parameter Parser::ParseParameter() {
     }
 }
 
-void Parser::ParseParameterList() {
+void Parser::pParameters() {
     if (failed == false) {
         if (Token2.GetType() == RIGHT_PAREN) {
             return;
@@ -448,9 +448,9 @@ void Parser::ParseParameterList() {
         else {
             Parameter newParam;
             pCheck(COMMA);
-            newParam = ParseParameter();
-            PushOnList(newParam.ToString());
-            ParseParameterList();
+            newParam = pParameter();
+            Pusher(newParam.ToString());
+            pParameters();
             return;
         }
     }
@@ -459,17 +459,17 @@ void Parser::ParseParameterList() {
     }
 }
 
-string Parser::ParseExpression() {
+string Parser::pExpression() {
     if (failed == false) {
         Expression theExpression;
         Parameter newParam;
 
         pCheck(LEFT_PAREN);
-        newParam = ParseParameter();
+        newParam = pParameter();
         theExpression.SetRight(newParam);
-        newParam.SetParam(ParseOperator().GetValue());
+        newParam.SetParam(pOperator().GetValue());
         theExpression.SetOperator(newParam);
-        newParam = ParseParameter();
+        newParam = pParameter();
         theExpression.SetLeft(newParam);
         pCheck(RIGHT_PAREN);
 
@@ -481,7 +481,7 @@ string Parser::ParseExpression() {
     }
 }
 
-Token Parser::ParseOperator() {
+Token Parser::pOperator() {
     if (failed == false) {
         if (Token2.GetType() == ADD) {
             pCheck(ADD);
