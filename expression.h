@@ -1,16 +1,18 @@
-#include "token.h"
-#include "parameter.h"
 #include <vector>
 
-class Expression {
-public:
-    void SetRight(Parameter right);
-    void SetOperator(Parameter oper);
-    void SetLeft(Parameter left);
-    string GetExpression();
-    string ToString();
+#include "token.h"
+#include "parameter.h"
+
+class Expression{
 private:
-    Parameter rightParam;
-    Parameter Operator;
-    Parameter leftParam;
+    Parameter LP;
+    Parameter RP;
+    Parameter OP;
+public:
+    void LSetter(Parameter left);
+    void RSetter(Parameter right);
+    void OPSetter(Parameter oper);
+		
+    string EGet();
+    string ToString();
 };
