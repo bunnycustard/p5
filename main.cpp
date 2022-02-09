@@ -11,7 +11,7 @@ int main (int argc, char* argv[]){
         Scanner Scanner1(filename);  
         Scanner1.tokenize();
         Parser Parser1;
-        bool trueorfalse = Parser1.DatalogProgram(Scanner1.GetList());
+        bool trueorfalse = Parser1.Logger(Scanner1.GetList());
         if(trueorfalse == false){Parser1.ToString();}
     }
     return 0;
