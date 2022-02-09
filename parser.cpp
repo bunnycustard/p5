@@ -119,13 +119,13 @@ Rule Parser::pRules(){
     vector<Predicate> RulesList;
     Predicate rule;
     if(failed == false){
-        theRule.SetHeadPredicate(pHeadPredicate());
+        theRule.HeadPredicateSetter(pHeadPredicate());
         pCheck(COLON_DASH);
         rule = pPredicate();
         RulesList.push_back(rule);
         RulesList = pPredicateList(RulesList);
         pCheck(PERIOD);
-        theRule.SetRule(RulesList);
+        theRule.RuleSetter(RulesList);
         return theRule;
     }
     else{return theRule;}
