@@ -115,20 +115,20 @@ vector<Rule> Parser::pRuleList(vector<Rule> RuleList){
 }
 
 Rule Parser::pRules(){
-    Rule theRule;
+    Rule Rule1;
     vector<Predicate> RulesList;
     Predicate rule;
     if(failed == false){
-        theRule.HPSetter(pHeadPredicate());
+        Rule1.HPSetter(pHeadPredicate());
         pCheck(COLON_DASH);
         rule = pPredicate();
         RulesList.push_back(rule);
         RulesList = pPredicateList(RulesList);
         pCheck(PERIOD);
-        theRule.RuleSetter(RulesList);
-        return theRule;
+        Rule1.RuleSetter(RulesList);
+        return Rule1;
     }
-    else{return theRule;}
+    else{return Rule1;}
 }
 
 vector<Predicate> Parser::pFactList(vector<Predicate> Facts){
@@ -139,7 +139,7 @@ vector<Predicate> Parser::pFactList(vector<Predicate> Facts){
             newFact = pFact();
             Facts.push_back(newFact);
             vector<Parameter> parameters;
-            parameters = newFact.ReturnVector();
+            parameters = newFact.GetVec();
             for (unsigned int i = 0; i < parameters.size(); i++) {Domain.insert(parameters.at(i).ToString());}
             Facts = pFactList(Facts);
             return Facts;
@@ -153,7 +153,7 @@ Predicate Parser::pFact(){
     if(failed == false){
         parameters.clear();
         pCheck(ID);
-        Facts.SetName(Token1.GetValue());
+        Facts.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(STRING);
         Pusher(Token1.GetValue());
@@ -161,7 +161,7 @@ Predicate Parser::pFact(){
         pStringList();
         pCheck(RIGHT_PAREN);
         pCheck(PERIOD);
-        for (unsigned int i = 0; i < parameters.size(); i++) {Facts.PushPredicate(parameters.at(i));}
+        for (unsigned int i = 0; i < parameters.size(); i++) {Facts.PPush(parameters.at(i));}
         return Facts;
     }
     else{return Facts;} 
@@ -185,13 +185,13 @@ Predicate Parser::pScheme(){
     if(failed == false){
         parameters.clear();
         pCheck(ID);
-        Schemes.SetName(Token1.GetValue());
+        Schemes.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(ID);
         Pusher(Token1.GetValue());
         pIDList();
         pCheck(RIGHT_PAREN);
-        for(unsigned int i = 0; i < parameters.size(); i++){Schemes.PushPredicate(parameters.at(i));}
+        for(unsigned int i = 0; i < parameters.size(); i++){Schemes.PPush(parameters.at(i));}
         return Schemes;
     }
     else{return Schemes;}
@@ -274,13 +274,13 @@ Predicate Parser::pHeadPredicate(){
     if(failed == false){
         parameters.clear();
         pCheck(ID);
-        headPredicate.SetName(Token1.GetValue());
+        headPredicate.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(ID);
         Pusher(Token1.GetValue());
         pIDList();
         pCheck(RIGHT_PAREN);
-        for(unsigned int i = 0; i < parameters.size(); i++){headPredicate.PushPredicate(parameters.at(i));}
+        for(unsigned int i = 0; i < parameters.size(); i++){headPredicate.PPush(parameters.at(i));}
         return headPredicate;
     }
     else{return headPredicate;}
@@ -305,13 +305,13 @@ Predicate Parser::pPredicate(){
     if(failed == false){
         parameters.clear();
         pCheck(ID);
-        Predicates.SetName(Token1.GetValue());
+        Predicates.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         Parameter2 = pParameter();
         Pusher(Parameter2.ToString());
         pParameters();
         pCheck(RIGHT_PAREN);
-        for(unsigned int i = 0; i < parameters.size(); i++){Predicates.PushPredicate(parameters.at(i));}
+        for(unsigned int i = 0; i < parameters.size(); i++){Predicates.PPush(parameters.at(i));}
         return Predicates;
     }
     else{return Predicates;}
@@ -374,19 +374,19 @@ void Parser::pParameters(){
 
 string Parser::pExpression(){
     if(failed == false){
-        Expression theExpression;
+        Expression Expression1;
         Parameter Parameter2;
 
         pCheck(LEFT_PAREN);
         Parameter2 = pParameter();
-        theExpression.SetRight(Parameter2);
+        Expression1.SetRight(Parameter2);
         Parameter2.SetParam(pOperator().GetValue());
-        theExpression.SetOperator(Parameter2);
+        Expression1.SetOperator(Parameter2);
         Parameter2 = pParameter();
-        theExpression.SetLeft(Parameter2);
+        Expression1.SetLeft(Parameter2);
         pCheck(RIGHT_PAREN);
 
-        return theExpression.GetExpression();
+        return Expression1.GetExpression();
     }
     else{
         string list;
