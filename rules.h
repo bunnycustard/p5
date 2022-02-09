@@ -1,12 +1,13 @@
 #pragma once
 #include "predicate.h"
 
-class Rule {
-    public:
-        void SetHeadPredicate(Predicate head);
-        void SetRule(vector<Predicate> Toke);
-        string ToString();
+class Rule{
     private:
         Predicate Head;
         vector<Predicate> RuleList;
+    public:
+        void HPSetter(Predicate head);
+        void RuleSetter(vector<Predicate> Toke);
+				
+        string ToString();
 };
