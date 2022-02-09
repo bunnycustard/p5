@@ -379,14 +379,14 @@ string Parser::pExpression(){
 
         pCheck(LEFT_PAREN);
         Parameter2 = pParameter();
-        Expression1.SetRight(Parameter2);
+        Expression1.RSetter(Parameter2);
         Parameter2.ParamSetter(pOperator().GetValue());
-        Expression1.SetOperator(Parameter2);
+        Expression1.OPSetter(Parameter2);
         Parameter2 = pParameter();
-        Expression1.SetLeft(Parameter2);
+        Expression1.LSetter(Parameter2);
         pCheck(RIGHT_PAREN);
 
-        return Expression1.GetExpression();
+        return Expression1.EGet();
     }
     else{
         string list;
