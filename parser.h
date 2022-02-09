@@ -21,8 +21,8 @@ class Parser{
 
         Datalog Parse(queue<Token> Tokens);
         bool pCheck(TokenType type);
-        Predicate ParseScheme();
-        vector<Predicate> ParseSchemeList(vector<Predicate> Schemes);
+        Predicate pScheme();
+        vector<Predicate> pSchemeList(vector<Predicate> Schemes);
         void ParseIDList();
         vector<Predicate> ParseFactList(vector<Predicate> Facts);
         Predicate ParseFact();
