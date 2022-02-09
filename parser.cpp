@@ -1,6 +1,6 @@
 #include "parser.h"
 
-Parser::Parser() {}
+Parser::Parser(){}
 Parser::~Parser(){}
 
 bool Parser::Logger(queue<Token> Tokens){
