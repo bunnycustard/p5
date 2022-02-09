@@ -2,13 +2,13 @@
 #include "parameter.h"
 #include <vector>
 
-class Predicate {
-    public:
-        void SetName(string theName);
-        vector<Parameter> ReturnVector();
-        void PushPredicate(Parameter theParameter);
-        string ToString();
+class Predicate{
     private:
-        vector<Parameter> parameterList;
+        vector<Parameter> paramlist;
         string Name;
+    public:
+        void NameSetter(string theName);
+        void PPush(Parameter theParameter);
+        vector<Parameter> GetVec();
+        string ToString();
 };
