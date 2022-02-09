@@ -1,24 +1,16 @@
 #include "expression.h"
 
-void Expression::SetRight(Parameter right) {
-    rightParam = right;
-}
-void Expression:: SetOperator(Parameter oper) {
-    Operator = oper;
-}
-void Expression::SetLeft(Parameter left) {
-    leftParam = left;
-}
-string Expression::GetExpression(){
-    string Express;
-    Express = rightParam.ToString() + Operator.ToString() + leftParam.ToString();
-    //cout << Express;
-    return Express;
-}
+void Expression::LSetter(Parameter left){LP = left;}
+void Expression::RSetter(Parameter right){RP = right;}
+void Expression::OPSetter(Parameter oper){OP = oper;}
 
-
-string Expression::ToString() {
+string Expression::ToString(){
     cout << "Expression to String" << endl;
-    string stringy = "(" + rightParam.ToString() + Operator.ToString() + leftParam.ToString() + ")";
-    return stringy;
+    string out = "(" + RP.ToString() + OP.ToString() + LP.ToString() + ")";
+    return out;
+}
+string Expression::EGet(){
+    string E;
+    E = RP.ToString() + OP.ToString() + LP.ToString();
+    return E;
 }
