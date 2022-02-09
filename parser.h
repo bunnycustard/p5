@@ -23,25 +23,25 @@ class Parser{
         bool pCheck(TokenType type);
         Predicate pScheme();
         vector<Predicate> pSchemeList(vector<Predicate> Schemes);
-        void ParseIDList();
-        vector<Predicate> ParseFactList(vector<Predicate> Facts);
-        Predicate ParseFact();
-        void ParseStringList();
-        vector<Rule> ParseRuleList(vector<Rule> Rules);
-        Rule ParseRules();
-        Predicate ParseQuery();
-        vector<Predicate> ParseQueryList(vector<Predicate> Queries);
+        void pIDList();
+        vector<Predicate> pFactList(vector<Predicate> Facts);
+        Predicate pFact();
+        void pStringList();
+        vector<Rule> pRuleList(vector<Rule> Rules);
+        Rule pRules();
+        Predicate pQuery();
+        vector<Predicate> pQueryList(vector<Predicate> Queries);
 
-        Predicate ParseHeadPredicate();
-        Predicate ParsePredicate();
-        vector<Predicate> ParsePredicateList(vector<Predicate>);
+        Predicate pHeadPredicate();
+        Predicate pPredicate();
+        vector<Predicate> pPredicateList(vector<Predicate>);
 
-        Parameter ParseParameter();
-        void ParseParameterList();
-        string ParseExpression();
-        Token ParseOperator();
+        Parameter pParameter();
+        void pParameters();
+        string pExpression();
+        Token pOperator();
 
-        void PushOnList(string token);
+        void Pusher(string token);
 				
     public:
         Parser();
