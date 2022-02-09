@@ -320,7 +320,7 @@ Predicate Parser::pPredicate(){
 void Parser::Pusher(string token){
     Parameter Parameter2;
     if (Token1.GetValue() != ""){
-        Parameter2.SetParam(token);
+        Parameter2.ParamSetter(token);
         parameters.push_back(Parameter2);
     }
     else{}
@@ -333,19 +333,19 @@ Parameter Parser::pParameter(){
         Token toSend = Token2;
         if (Token2.GetType() == STRING){
             pCheck(STRING);
-            Parameter2.SetParam(Token1.GetValue());
+            Parameter2.ParamSetter(Token1.GetValue());
             return Parameter2;
         }   
         else if(Token2.GetType() == ID){
             pCheck(ID);
-            Parameter2.SetParam(Token1.GetValue());
+            Parameter2.ParamSetter(Token1.GetValue());
             return Parameter2;
         }
         else if(Token2.GetType() == LEFT_PAREN){
             string tempstring;
             tempstring = pExpression();
             tempstring = "(" + tempstring + ")";
-            Parameter2.SetParam(tempstring);
+            Parameter2.ParamSetter(tempstring);
             return Parameter2;
         }
         else{
@@ -380,7 +380,7 @@ string Parser::pExpression(){
         pCheck(LEFT_PAREN);
         Parameter2 = pParameter();
         Expression1.SetRight(Parameter2);
-        Parameter2.SetParam(pOperator().GetValue());
+        Parameter2.ParamSetter(pOperator().GetValue());
         Expression1.SetOperator(Parameter2);
         Parameter2 = pParameter();
         Expression1.SetLeft(Parameter2);
