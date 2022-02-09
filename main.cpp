@@ -1,9 +1,9 @@
 #include "scanner.h"
 #include "parser.h"
 
-int main (int argc, char* argv[]){
+int main(int argc, char* argv[]){
     if(!argv[1]){
-        cout << "must include file name in commandline" << endl;
+        cout << "Include file name" << endl;
         cout << "Total Tokens = 0" << endl;
     }
     else{
@@ -11,8 +11,8 @@ int main (int argc, char* argv[]){
         Scanner Scanner1(filename);  
         Scanner1.tokenize();
         Parser Parser1;
-        bool trueorfalse = Parser1.Logger(Scanner1.GetList());
-        if(trueorfalse == false){Parser1.ToString();}
+        bool tf = Parser1.Logger(Scanner1.GetList());
+        if(tf == false){Parser1.ToString();}
     }
     return 0;
 }
