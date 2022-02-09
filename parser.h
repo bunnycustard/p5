@@ -1,24 +1,26 @@
 #pragma once
+
+#include <queue>
+
 #include "token.h"
 #include "datalog.h"
 #include "expression.h"
-#include <queue>
 
-class Parser {
-    protected:
+class Parser{
+		protected:
         Token Token1;
         Token Token2;
-        vector<Parameter> parameters;
         queue<Token> tQueue;
+        vector<Parameter> parameters;
         bool failed = false;
-        Datalog Everything;
         set<string> Domain;
+        Datalog All;
 
-        void PrintFail(int i = 0);
-        bool CheckNext(TokenType type);
+        void WhenFailed(int i = 0);
+        bool Continue(TokenType type);
 
         Datalog Parse(queue<Token> Tokens);
-        bool ParseCheck(TokenType type);
+        bool pCheck(TokenType type);
         Predicate ParseScheme();
         vector<Predicate> ParseSchemeList(vector<Predicate> Schemes);
         void ParseIDList();
@@ -45,6 +47,6 @@ class Parser {
         Parser();
         ~Parser();
 
-        bool DatalogProgram(queue<Token> Tokens);
         string ToString();
+        bool Logger(queue<Token> Tokens);
 };
