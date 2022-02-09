@@ -25,8 +25,8 @@ Datalog Parser::Parse(queue<Token> Tokens){
     vector<Predicate> Schemes;
     pCheck(SCHEMES);
     pCheck(COLON);
-    Schemes.push_back(ParseScheme());
-    Schemes = ParseSchemeList(Schemes);
+    Schemes.push_back(pScheme());
+    Schemes = pSchemeList(Schemes);
     if (failed == false) {
         All.SchemesSetter(Schemes);
     }
@@ -228,7 +228,7 @@ void Parser::ParseStringList(){
     }
 }
 
-Predicate Parser::ParseScheme() {
+Predicate Parser::pScheme() {
     Predicate Schemes;
     if (failed == false) {
         parameters.clear();
@@ -249,16 +249,16 @@ Predicate Parser::ParseScheme() {
     }
 }
 
-vector<Predicate> Parser::ParseSchemeList(vector<Predicate> Schemes) {
+vector<Predicate> Parser::pSchemeList(vector<Predicate> Schemes) {
     Predicate newScheme; 
     if (failed == false) {
         if (Token2.GetType() == FACTS) {
             return Schemes;
         }
         else {
-            newScheme = ParseScheme();
+            newScheme = pScheme();
             Schemes.push_back(newScheme);
-            Schemes = ParseSchemeList(Schemes);
+            Schemes = pSchemeList(Schemes);
             return Schemes;
         }
     }
@@ -498,3 +498,4 @@ Token Parser::ParseOperator() {
         return Token1;
     }
 }
+
