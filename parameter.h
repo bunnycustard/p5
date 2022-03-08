@@ -5,9 +5,15 @@
 using namespace std;
 
 class Parameter{
-    private:
-        string P1;
     public:
+				string P1
+				bool boolString
         void ParamSetter(string param);
         string ToString();
+				void BoolSetter(bool tf){
+					boolString = tf
+				}
+				bool IsString(){
+					return boolString;
+				}
 };
