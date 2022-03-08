@@ -1,4 +1,20 @@
-        Database1.rAdd(Name1, Relation1);
+#include "interpreter.h"
+
+void Interpreter::dlSet(Datalog Datalog2){
+    Datalog1 = Datalog2;
+    S2D(Datalog1.GetSchemes());
+    F2D(Datalog1.GetFacts());
+    RQUE(Datalog1.GetQueries());
+}
+void Interpreter::S2D(vector<Predicate> Predicates){
+    for(unsigned int i = 0; i < Predicates.size(); i++){
+        string Name1 = Predicates.at(i).nGet();
+        Scheme theScheme;
+        for(unsigned int j = 0; j < Predicates.at(i).GetVec().size(); j++){theScheme.pBack(Predicates.at(i).GetVec().at(j).ToString());}
+        Relation Relation1;
+        Relation1.nSet(Name1);
+        Relation1.sSet(theScheme);
+        Databse1.rAdd(Name1, Relation1);
     }
     
 }
@@ -8,7 +24,7 @@ void Interpreter::F2D(vector<Predicate> Facts){
         Name1 = Facts.at(j).nGet();
         Tuple theTuple;
         for(unsigned int i = 0; i < Facts.at(j).GetVec().size(); i++) {theTuple.push_back(Facts.at(j).GetVec().at(i).ToString());}
-        Database1.tAddr(Name1, theTuple);
+        Databse1.tAddr(Name1, theTuple);
     }
 }
 void Interpreter::RQUE(vector<Predicate> Queries){
@@ -16,7 +32,7 @@ void Interpreter::RQUE(vector<Predicate> Queries){
         string Name1 = Queries.at(i).nGet();
         vector<int> iVec;
         vector<string> sVec;
-        Relation Relation0 = Database1.dbs.at(Name1);
+        Relation Relation0 = Databse1.dbs.at(Name1);
         for(unsigned int j = 0; j < Queries.at(i).GetVec().size(); j++){
             Parameter CP1 = Queries.at(i).GetVec().at(j);
             if(CP1.IsString() == true){
