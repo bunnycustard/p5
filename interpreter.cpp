@@ -1,4 +1,4 @@
-        Databse1.rAdd(Name1, Relation1);
+        Database1.rAdd(Name1, Relation1);
     }
     
 }
@@ -8,7 +8,7 @@ void Interpreter::F2D(vector<Predicate> Facts){
         Name1 = Facts.at(j).nGet();
         Tuple theTuple;
         for(unsigned int i = 0; i < Facts.at(j).GetVec().size(); i++) {theTuple.push_back(Facts.at(j).GetVec().at(i).ToString());}
-        Databse1.tAddr(Name1, theTuple);
+        Database1.tAddr(Name1, theTuple);
     }
 }
 void Interpreter::RQUE(vector<Predicate> Queries){
@@ -16,7 +16,7 @@ void Interpreter::RQUE(vector<Predicate> Queries){
         string Name1 = Queries.at(i).nGet();
         vector<int> iVec;
         vector<string> sVec;
-        Relation Relation0 = Databse1.databaseseses.at(Name1);
+        Relation Relation0 = Database1.dbs.at(Name1);
         for(unsigned int j = 0; j < Queries.at(i).GetVec().size(); j++){
             Parameter CP1 = Queries.at(i).GetVec().at(j);
             if(CP1.IsString() == true){
