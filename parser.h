@@ -7,7 +7,7 @@
 #include "expression.h"
 
 class Parser{
-		protected:
+    protected:
         Token Token1;
         Token Token2;
         queue<Token> tQueue;
@@ -41,7 +41,7 @@ class Parser{
         string pExpression();
         Token pOperator();
 
-        void Pusher(string token);
+        void Pusher(string token, bool tf);
 				
     public:
         Parser();
@@ -49,4 +49,6 @@ class Parser{
 
         string ToString();
         bool Logger(queue<Token> Tokens);
+	Datalog GetDatalog();
 };
+
