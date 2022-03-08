@@ -3,6 +3,8 @@
 Parser::Parser(){}
 Parser::~Parser(){}
 
+Datalog Parser::GetDatalog() {return All;}
+
 bool Parser::Logger(queue<Token> Tokens){
     Parse(Tokens);
     return failed;
@@ -64,7 +66,7 @@ Datalog Parser::Parse(queue<Token> Tokens){
     else{return All;}
     if(failed == false){
         if(Token2.GetType() == EOFa){
-            cout << "Success!" << endl;
+            //cout << "Success!" << endl;
             return All;
         }
         else{
@@ -156,7 +158,7 @@ Predicate Parser::pFact(){
         Facts.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(STRING);
-        Pusher(Token1.GetValue());
+        Pusher(Token1.GetValue(), true);
         Domain.insert(Token1.GetValue());
         pStringList();
         pCheck(RIGHT_PAREN);
@@ -172,7 +174,7 @@ void Parser::pStringList(){
         if(Token2.GetType() == COMMA){
             pCheck(COMMA);
             pCheck(STRING);
-            Pusher(Token1.GetValue());
+            Pusher(Token1.GetValue(), true);
             pStringList();
         }
         else{return;}
@@ -188,7 +190,7 @@ Predicate Parser::pScheme(){
         Schemes.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(ID);
-        Pusher(Token1.GetValue());
+        Pusher(Token1.GetValue(), false);
         pIDList();
         pCheck(RIGHT_PAREN);
         for(unsigned int i = 0; i < parameters.size(); i++){Schemes.PPush(parameters.at(i));}
@@ -216,7 +218,7 @@ void Parser::pIDList(){
         if(Token2.GetType() == COMMA){
             pCheck(COMMA);
             pCheck(ID);
-            Pusher(Token1.GetValue());
+            Pusher(Token1.GetValue(), false);
             pIDList();
         }
         else{return;}
@@ -277,7 +279,7 @@ Predicate Parser::pHeadPredicate(){
         headPredicate.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         pCheck(ID);
-        Pusher(Token1.GetValue());
+        Pusher(Token1.GetValue(), false);
         pIDList();
         pCheck(RIGHT_PAREN);
         for(unsigned int i = 0; i < parameters.size(); i++){headPredicate.PPush(parameters.at(i));}
@@ -308,7 +310,7 @@ Predicate Parser::pPredicate(){
         Predicates.NameSetter(Token1.GetValue());
         pCheck(LEFT_PAREN);
         Parameter2 = pParameter();
-        Pusher(Parameter2.ToString());
+        Pusher(Parameter2.ToString(), Parameter2.IsString());
         pParameters();
         pCheck(RIGHT_PAREN);
         for(unsigned int i = 0; i < parameters.size(); i++){Predicates.PPush(parameters.at(i));}
@@ -317,10 +319,11 @@ Predicate Parser::pPredicate(){
     else{return Predicates;}
 }
 
-void Parser::Pusher(string token){
+void Parser::Pusher(string token, bool StringAlt){
     Parameter Parameter2;
     if (Token1.GetValue() != ""){
         Parameter2.ParamSetter(token);
+				Parameter2.BoolSetter(StringAlt);
         parameters.push_back(Parameter2);
     }
     else{}
@@ -334,11 +337,13 @@ Parameter Parser::pParameter(){
         if (Token2.GetType() == STRING){
             pCheck(STRING);
             Parameter2.ParamSetter(Token1.GetValue());
+						Parameter2.BoolSetter(true);
             return Parameter2;
         }   
         else if(Token2.GetType() == ID){
             pCheck(ID);
             Parameter2.ParamSetter(Token1.GetValue());
+						Parameter2.BoolSetter(false);
             return Parameter2;
         }
         else if(Token2.GetType() == LEFT_PAREN){
@@ -364,7 +369,7 @@ void Parser::pParameters(){
             Parameter Parameter2;
             pCheck(COMMA);
             Parameter2 = pParameter();
-            Pusher(Parameter2.ToString());
+            Pusher(Parameter2.ToString(), Parameter2.IsString());
             pParameters();
             return;
         }
