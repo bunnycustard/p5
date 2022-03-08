@@ -6,7 +6,7 @@ using namespace std;
 
 class Parameter{
 	public:
-		string P1
+		string P1;
 		bool boolString;
 		void ParamSetter(string param);
 		string ToString();
