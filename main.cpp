@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
         Parser Parser1;
 				Interpreter Interpreter1;
         bool valid = Parser1.Logger(Scanner1.GetList());
-        if(valid == false){Interpreter1.dlSet(Parser1.GetDatalog);}
+        if(valid == false){Interpreter1.dlSet(Parser1.GetDatalog());}
     }
     return 0;
 }
