@@ -7,11 +7,11 @@ using namespace std;
 class Parameter{
 	public:
 		string P1
-		bool boolString
+		bool boolString;
 		void ParamSetter(string param);
 		string ToString();
 		void BoolSetter(bool tf){
-			boolString = tf
+			boolString = tf;
 		}
 		bool IsString(){
 			return boolString;
