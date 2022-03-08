@@ -19,7 +19,7 @@ void Interpreter::S2D(vector<Predicate> Predicates){
     
 }
 void Interpreter::F2D(vector<Predicate> Facts){
-    for(unsigned int j = 0; j < Facts.size(); j++){}
+    for(unsigned int j = 0; j < Facts.size(); j++){
         string Name1;
         Name1 = Facts.at(j).nGet();
         Tuple theTuple;
@@ -65,4 +65,4 @@ void Interpreter::RQUE(vector<Predicate> Queries){
     }
 }
 
-string Interpreter::ToString() {return Databse1.ToStirng();}
+string Interpreter::ToString() {return Database1.ToStirng();}
