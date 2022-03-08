@@ -11,4 +11,7 @@ class Predicate{
         void PPush(Parameter theParameter);
         vector<Parameter> GetVec();
         string ToString();
+		string nGet(){
+			return Name;
+		}
 };
