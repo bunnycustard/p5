@@ -4,14 +4,12 @@
 #include <set>
 
 class Relation{
-private:
-    string name;
-    Scheme Scheme1;
 public:
     Relation(){}
     Scheme sGet(){return Scheme1;}
-    set<Tuple> tGet() {return dTup;}
-    string ToString();
+    set<Tuple> tGet(){return dTup;}
+    int TupSize(){return dTup.size();}
+    void ToString();
     set<Tuple> dTup;
     Relation select(int ind, string value);
     Relation select(int i1, int i2);
@@ -20,4 +18,10 @@ public:
     void tAdd(Tuple tuples); 
     void sSet(Scheme dSch);
     void nSet(string dName);
+    Relation Join(Relation relationToJoin);
+    bool Unite(Relation toUnite);
+    bool isJoinable(Tuple Tuple1, Tuple Tuple2Add, Scheme Scheme1, Scheme Scheme2Add);
+    string name;
+    Scheme Scheme1;
+    bool BeenOutPutted;
 };
