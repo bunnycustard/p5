@@ -28,7 +28,7 @@ void Interpreter::F2D(vector<Predicate> Facts){
         for(unsigned int i = 0; i < Facts.at(j).GetVec().size(); i++) {theTuple.push_back(Facts.at(j).GetVec().at(i).ToString());}
         Database1.tAddr(Name1, theTuple);
     }
-	return;
+    return;
 }
 void Interpreter::RQUE(vector<Predicate> Queries){
     for(unsigned int i = 0; i < Queries.size(); i++){
