@@ -28,7 +28,7 @@ void Interpreter::F2D(vector<Predicate> Facts){
         for(unsigned int i = 0; i < Facts.at(j).GetVec().size(); i++) {theTuple.push_back(Facts.at(j).GetVec().at(i).ToString());}
         Database1.tAddr(Name1, theTuple);
     }
-    return;
+		return;
 }
 void Interpreter::RQUE(vector<Predicate> Queries){
     for(unsigned int i = 0; i < Queries.size(); i++){
@@ -42,6 +42,43 @@ void Interpreter::RQUE(vector<Predicate> Queries){
     }
     return;
 }
+/*    for(unsigned int i = 0; i < Queries.size(); i++){
+        string Name1 = Queries.at(i).nGet();
+        vector<int> iVec;
+        vector<string> sVec;
+        Relation Relation0 = Database1.dbs.at(Name1);
+        for(unsigned int j = 0; j < Queries.at(i).GetVec().size(); j++){
+            Parameter CP1 = Queries.at(i).GetVec().at(j);
+            if(CP1.IsString() == true){
+                string yes = CP1.P1;
+                Relation0 = Relation0.select(j,yes);
+            }
+            else{
+                bool duplicate = false;
+                for(unsigned int k = 0; k < sVec.size(); k++){ 
+                    if (sVec.at(k) == CP1.P1) { 
+                        duplicate = true;
+                        Relation0 = Relation0.select(j,k);
+                    }
+                }
+                if(duplicate == false){
+                    sVec.push_back(CP1.P1);
+                    iVec.push_back(j);
+                }
+            }
+        }
+        Relation Relation1;
+        Relation1 = Relation0.jects(iVec);
+        Relation0 = Relation1.declare(sVec);
+        cout << Queries.at(i).ToString() << "? ";
+        if(Relation0.dTup.size() == 0){cout << "No\n";  }
+        else {
+            cout << "Yes(" << Relation0.dTup.size() <<")\n";
+            Relation0.ToString();
+        }
+    }
+}
+*/
 
 void Interpreter::rRules(vector<Rule> Rules){
     cout << "Rule Evaluation" << endl;
@@ -70,7 +107,7 @@ void Interpreter::rRules(vector<Rule> Rules){
                     if(Rules.at(i).Head.paramlist.at(j).P1 == Relation0.  Scheme1.At(k)){Indicies.push_back(k);}
                 }
             }
-            Relation0 = Relation0.Project(Indicies);
+            Relation0 = Relation0.jects(Indicies);
             Relation0.name = Rules.at(i).Head.Name;
             if (Database1.dbs.at(Relation0.name).  Scheme1.values.size() == Relation0.  Scheme1.values.size()) {
                 Relation0.  Scheme1 = Database1.dbs.at(Relation0.name).  Scheme1;
@@ -113,7 +150,7 @@ Relation Interpreter::EvalutatePredicate(Predicate Queries){
                 }
             }
         }
-        Relation0 = Relation0.Project(theInts);
+        Relation0 = Relation0.jects(theInts);
         Relation0 = Relation0.Rename(theStrings);
         return Relation0;
 }
