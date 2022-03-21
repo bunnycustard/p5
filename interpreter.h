@@ -11,5 +11,7 @@ class Interpreter{
         void S2D(vector<Predicate> Schemes);
         void F2D(vector<Predicate> Facts);
         void RQUE(vector<Predicate> Queries);
+        void rRules(vector<Rule> Rules);
+        Relation EvalutatePredicate(Predicate Predicates);
         string ToString();
 };
