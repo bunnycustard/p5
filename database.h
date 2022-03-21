@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <sstream>
 #include "relation.h"
 
 class Database{
@@ -14,10 +15,22 @@ public:
         return;
     }
     string ToStirng() {
-        string opstr1;
+        stringstream opstr1;
         map<string, Relation> ptr;
-        for (auto i: dbs) {opstr1  =  i.first + ": \n" + i.second.ToString();}
-        return opstr1;
+        for (auto i: dbs) {
+					cout  <<  i.first << ": \n";
+          i.second.ToString();
+				}
+        return opstr1.str();
     }
     Relation GetRelation(string Name){return dbs.at(Name);}
+    int TQ() {
+        int size = 0;
+        for (auto i: dbs) {
+            cout << "This is the Size: ";
+            size += i.second.TupSize();
+            cout << size << endl;
+        }
+        return size;
+    }
 };
