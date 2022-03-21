@@ -15,7 +15,7 @@ Relation Relation::Join(Relation relationToJoin){
 
         }
         if(!isACopy){
-            NewRelation.Scheme1.Push_back(relationToJoin.Scheme1.At(i));
+            NewRelation.Scheme1.pBack(relationToJoin.Scheme1.At(i));
             toAddInts.push_back(i);
         }
     }
@@ -95,7 +95,7 @@ Relation Relation::jects(vector<int> indicies){
         Relation1.tAdd(PHT);
     }
     Scheme PHSch;
-    for(unsigned int i = 0; i < indicies.size(); i++ ){PHSch.pBack(Scheme1.at(indicies.at(i)));}
+    for(unsigned int i = 0; i < indicies.size(); i++ ){PHSch.pBack(Scheme1.At(indicies.at(i)));}
     Relation1.sSet(PHSch);
     return Relation1;
 }
