@@ -151,7 +151,7 @@ Relation Interpreter::EvalutatePredicate(Predicate Queries){
             }
         }
         Relation0 = Relation0.jects(theInts);
-        Relation0 = Relation0.Rename(theStrings);
+        Relation0 = Relation0.declare(theStrings);
         return Relation0;
 }
 
