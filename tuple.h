@@ -5,4 +5,10 @@
 
 using namespace std;
 
-class Tuple: public vector<string>{vector <string> values;};
+class Tuple: public vector<string>{
+	vector <string> values;
+	bool beenOutputted;
+	string At (int num) {
+			return values.at(num);
+	}
+};
