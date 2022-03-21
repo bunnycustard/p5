@@ -2,12 +2,11 @@
 #include "predicate.h"
 
 class Rule{
-    private:
-        Predicate Head;
-        vector<Predicate> RuleList;
     public:
         void HPSetter(Predicate head);
         void RuleSetter(vector<Predicate> Toke);
+        Predicate Head;
+        vector<Predicate> RuleList;
 				
         string ToString();
 };
