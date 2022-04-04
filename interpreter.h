@@ -1,6 +1,7 @@
 #pragma once
 #include "database.h"
 #include "datalog.h"
+#include "Graph.h"
 
 class Interpreter{
     private:
@@ -11,7 +12,8 @@ class Interpreter{
         void S2D(vector<Predicate> Schemes);
         void F2D(vector<Predicate> Facts);
         void RQUE(vector<Predicate> Queries);
-        void rRules(vector<Rule> Rules);
+        void rRules(vector<Rule> Rules, bool dependent);
         Relation EvalutatePredicate(Predicate Predicates);
+        void rOpt(vector<Rule>Rules);
         string ToString();
 };
