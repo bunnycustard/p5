@@ -42,43 +42,6 @@ void Interpreter::RQUE(vector<Predicate> Queries){
     }
     return;
 }
-/*    for(unsigned int i = 0; i < Queries.size(); i++){
-        string Name1 = Queries.at(i).nGet();
-        vector<int> iVec;
-        vector<string> sVec;
-        Relation Relation0 = Database1.dbs.at(Name1);
-        for(unsigned int j = 0; j < Queries.at(i).GetVec().size(); j++){
-            Parameter CP1 = Queries.at(i).GetVec().at(j);
-            if(CP1.IsString() == true){
-                string yes = CP1.P1;
-                Relation0 = Relation0.select(j,yes);
-            }
-            else{
-                bool duplicate = false;
-                for(unsigned int k = 0; k < sVec.size(); k++){ 
-                    if (sVec.at(k) == CP1.P1) { 
-                        duplicate = true;
-                        Relation0 = Relation0.select(j,k);
-                    }
-                }
-                if(duplicate == false){
-                    sVec.push_back(CP1.P1);
-                    iVec.push_back(j);
-                }
-            }
-        }
-        Relation Relation1;
-        Relation1 = Relation0.jects(iVec);
-        Relation0 = Relation1.declare(sVec);
-        cout << Queries.at(i).ToString() << "? ";
-        if(Relation0.dTup.size() == 0){cout << "No\n";  }
-        else {
-            cout << "Yes(" << Relation0.dTup.size() <<")\n";
-            Relation0.ToString();
-        }
-    }
-}
-*/
 
 void Interpreter::rRules(vector<Rule> Rules, bool what){
     bool Tuples2 = true;
