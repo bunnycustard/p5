@@ -4,7 +4,7 @@ void Interpreter::dlSet(Datalog Datalog2){
     Datalog1 = Datalog2;
     S2D(Datalog1.GetSchemes());
     F2D(Datalog1.GetFacts());
-		rRules(Datalog1.GetRules());
+	  rOpt(Datalog1.GetRules());
     cout << "Query Evaluation" << endl;
     RQUE(Datalog1.GetQueries());
 }
@@ -21,7 +21,7 @@ void Interpreter::S2D(vector<Predicate> Predicates){
     
 }
 void Interpreter::F2D(vector<Predicate> Facts){
-    for(unsigned int j = 0; j < Facts.size(); j++){
+    for(unsigned int j = 0; j < Facts.size(); j++){}
         string Name1;
         Name1 = Facts.at(j).nGet();
         Tuple theTuple;
@@ -80,8 +80,7 @@ void Interpreter::RQUE(vector<Predicate> Queries){
 }
 */
 
-void Interpreter::rRules(vector<Rule> Rules){
-    cout << "Rule Evaluation" << endl;
+void Interpreter::rRules(vector<Rule> Rules, bool what){
     bool Tuples2 = true;
     int rulesPass =0;
     while(Tuples2){
@@ -115,13 +114,12 @@ void Interpreter::rRules(vector<Rule> Rules){
             else {}
             cont.push_back(Database1.dbs.at(Relation0.name).Unite(Relation0));
         }
-        for (unsigned int a = 0; a <cont.size(); a++) {
-            if (cont.at(a)) {
-                Tuples2 = true;
-            } 
+        for(unsigned int a = 0; a <cont.size(); a++){
+            if(cont.at(a)){Tuples2 = true;} 
         }
+				if(!what){Tuples2 = false;}
     }
-    cout << endl << "Schemes populated after " << rulesPass << " passes through the Rules." << endl << endl;;
+    cout << rulesPass << " passes: ";
     return;
 }
 
@@ -151,8 +149,63 @@ Relation Interpreter::EvalutatePredicate(Predicate Queries){
             }
         }
         Relation0 = Relation0.jects(theInts);
-        Relation0 = Relation0.declare(theStrings);
+        Relation0 = Relation0.Rename(theStrings);
         return Relation0;
+}
+
+void Interpreter::rOpt(vector<Rule>Rules) {
+    Graph Forward, Backwards;
+    vector<string> test;
+    int open = (int) Rules.size();
+    for (int i = 0; i < open; i ++) {
+        Node Node2;
+        Node2.id = i;
+        Node2.sustainable = false;
+        Forward.nodeList.insert({i, Node2});
+        Backwards.nodeList.insert({i, Node2});
+    }
+    for ( int i = 0; i < open; i++) {
+        bool addpunch = false;
+        int open1 = (int) Rules.at(i).RuleList.size();
+        for (int j = 0; j < open1; j++) {
+            for (int k = 0; k < open; k++) {
+                if (Rules.at(i).RuleList.at(j).Name == Rules.at(k).Head.Name) {
+                    bool sustain = false;
+                    if (i==k){sustain = true;}
+                    if(Forward.nodeList[i].sustainable) {sustain = true;}
+                    Forward.addEdge(i,k, sustain);
+                    Backwards.addEdge(k,i, sustain);
+                    addpunch = true;
+                }
+            }
+        }
+        if (!addpunch){}
+    }
+    Forward.ToString();
+    Backwards.dfsF();
+    Forward.topocate = Backwards.topocate;
+    Forward.dfsFF();
+    cout <<endl<< "Rule Evaluation" << endl;
+    for(unsigned int i = 0; i < Forward.scc.size(); i ++){
+        vector<Rule> Spec;
+        string hey;
+        unsigned int k = 0;
+        bool what;
+        for(auto j: Forward.scc.at(i)){
+            Spec.push_back(Rules.at(j));
+            string x = to_string(j);
+            hey = hey + "R" + x;
+            if (k != Forward.scc.at(i).size() - 1) {hey = hey + ",";}
+            k++;
+            what = Forward.nodeList[j].sustainable;
+        }
+        
+        if(Forward.scc.at(i).size() != 1){what = true;}
+        cout << "SCC: " << hey << endl; 
+        RelationRules(Spec, what);
+        cout << hey << endl;
+    }
+    return; 
 }
 
 string Interpreter::ToString() {return Database1.ToStirng();}
