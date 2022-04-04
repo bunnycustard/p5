@@ -5,7 +5,7 @@ void Interpreter::dlSet(Datalog Datalog2){
     S2D(Datalog1.GetSchemes());
     F2D(Datalog1.GetFacts());
 	  rOpt(Datalog1.GetRules());
-    cout << "Query Evaluation" << endl;
+    cout << endl << "Query Evaluation" << endl;
     RQUE(Datalog1.GetQueries());
 }
 void Interpreter::S2D(vector<Predicate> Predicates){
