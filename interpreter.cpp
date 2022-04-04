@@ -28,7 +28,7 @@ void Interpreter::F2D(vector<Predicate> Facts){
         for(unsigned int i = 0; i < Facts.at(j).GetVec().size(); i++) {theTuple.push_back(Facts.at(j).GetVec().at(i).ToString());}
         Database1.tAddr(Name1, theTuple);
     }
-		return;
+    return;
 }
 void Interpreter::RQUE(vector<Predicate> Queries){
     for(unsigned int i = 0; i < Queries.size(); i++){
@@ -112,7 +112,7 @@ Relation Interpreter::EvalutatePredicate(Predicate Queries){
             }
         }
         Relation0 = Relation0.jects(theInts);
-        Relation0 = Relation0.Rename(theStrings);
+        Relation0 = Relation0.declare(theStrings);
         return Relation0;
 }
 
@@ -124,8 +124,8 @@ void Interpreter::rOpt(vector<Rule>Rules) {
         Node Node2;
         Node2.id = i;
         Node2.sustainable = false;
-        Forward.nodeList.insert({i, Node2});
-        Backwards.nodeList.insert({i, Node2});
+        Forward.nList.insert({i, Node2});
+        Backwards.nList.insert({i, Node2});
     }
     for ( int i = 0; i < open; i++) {
         bool addpunch = false;
@@ -135,7 +135,7 @@ void Interpreter::rOpt(vector<Rule>Rules) {
                 if (Rules.at(i).RuleList.at(j).Name == Rules.at(k).Head.Name) {
                     bool sustain = false;
                     if (i==k){sustain = true;}
-                    if(Forward.nodeList[i].sustainable) {sustain = true;}
+                    if(Forward.nList[i].sustainable) {sustain = true;}
                     Forward.addEdge(i,k, sustain);
                     Backwards.addEdge(k,i, sustain);
                     addpunch = true;
@@ -160,12 +160,12 @@ void Interpreter::rOpt(vector<Rule>Rules) {
             hey = hey + "R" + x;
             if (k != Forward.scc.at(i).size() - 1) {hey = hey + ",";}
             k++;
-            what = Forward.nodeList[j].sustainable;
+            what = Forward.nList[j].sustainable;
         }
         
         if(Forward.scc.at(i).size() != 1){what = true;}
         cout << "SCC: " << hey << endl; 
-        RelationRules(Spec, what);
+        rRules(Spec, what);
         cout << hey << endl;
     }
     return; 
